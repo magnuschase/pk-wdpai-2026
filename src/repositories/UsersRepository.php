@@ -2,9 +2,10 @@
 
 require_once 'Repository.php';
 
-class UsersRepository extends Repository {
+class UsersRepository extends Repository
+{
 
-	public function getUsers(): ?array 
+	public function getUsers(): ?array
 	{
 		$query = $this->database->connect()->prepare(
 			"
@@ -17,7 +18,8 @@ class UsersRepository extends Repository {
 		return $users;
 	}
 
-	public function getUserByEmail(string $email) {
+	public function getUserByEmail(string $email)
+	{
 		$query = $this->database->connect()->prepare(
 			"
 			SELECT * FROM users WHERE email = :email
@@ -31,24 +33,20 @@ class UsersRepository extends Repository {
 	}
 
 	public function createUser(
+		string $username,
 		string $email,
 		string $hashedPassword,
-		string $firstname,
-		string $lastname,
-		string $bio = ''
 	) {
 		$query = $this->database->connect()->prepare(
 			"
-			INSERT INTO users (firstname, lastname, email, password, bio)
-			VALUES (?, ?, ?, ?, ?);
+			INSERT INTO users (username, email, password)
+			VALUES (?, ?, ?);
 			"
 		);
 		$query->execute([
-			$firstname,
-			$lastname,
-			$email, 
-			$hashedPassword,
-			$bio
+			$username,
+			$email,
+			$hashedPassword
 		]);
 	}
 }
