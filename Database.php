@@ -1,0 +1,46 @@
+<?php
+// TODO: load .env instead of config.php 
+require_once "config.php";
+
+// TODO: Make this a singleton 
+class Database {
+	private $username;
+	private $password;
+	private $host;
+	private $database;
+	// TODO: use connection instead of creating new one every time
+	// private $conn;
+
+	public function __construct()
+	{
+		$this->username = USERNAME;
+		$this->password = PASSWORD;
+		$this->host = HOST;
+		$this->database = DATABASE;
+	}
+
+	public function connect()
+	{
+		try {
+			$conn = new PDO(
+				"pgsql:host=$this->host;port=5432;dbname=$this->database",
+				$this->username,
+				$this->password,
+				["sslmode"  => "prefer"]
+			);
+
+			// TODO: set the PDO error mode to exception
+			$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			return $conn;
+		}
+		catch(PDOException $e) {
+			// TODO: change to error page e.g. 404 not found etc.
+			die("Connection failed: " . $e->getMessage());
+		}
+	}
+
+	public function disconnect() {
+		// TODO: implement disconnect method
+		// $this->conn = null;
+	}
+}
