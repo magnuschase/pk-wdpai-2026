@@ -6,6 +6,13 @@
     <title>Dashboard</title>
   </head>
   <body>
-    <h1>Dashboard goes here</h1>
+    <h1>Dashboard View</h1>
+    <main>
+      <?php foreach($users as $key=>$value): ?>
+      <span><?= $value["username"]; ?></span>
+      <span><?= $value["email"]; ?></span>
+      <br />
+      <?php endforeach; ?>
+    </main>
   </body>
 </html>
