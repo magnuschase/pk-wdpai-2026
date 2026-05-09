@@ -1,0 +1,52 @@
+:root {
+  --primary: #ec5b13;
+  --muted-foreground: #c79480;
+  --nav-foreground: #cbd5e1;
+  --bg-light: #f8f6f6;
+  --bg-dark: #221610;
+  --neutral-50: #faf6f4;
+  --neutral-100: #f5ebe6;
+  --neutral-200: #ebd9d1;
+  --neutral-300: #dbb9ab;
+  --neutral-400: #c79480;
+  --neutral-500: #b0745d;
+  --neutral-600: #8f5744;
+  --neutral-700: #754536;
+  --neutral-800: #5e392e;
+  --neutral-900: #4d3029;
+  --neutral-950: #221610;
+}
+
+body {
+  font-family:
+    Spline Sans,
+    sans-serif;
+  background-color: var(--bg-dark);
+  color: #fff;
+  min-height: 100vh;
+  overflow-x: hidden;
+  margin: 0 auto;
+  position: relative;
+}
+
+body::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--primary), var(--neutral-950));
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+main {
+  display: flex;
+  flex-flow: column wrap;
+  gap: 1rem;
+  padding: 2rem 1rem 1rem 1rem;
+  min-height: 100vh;
+}
+
+p {
+  margin: 0;
+}
