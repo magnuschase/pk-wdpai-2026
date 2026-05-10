@@ -49,4 +49,11 @@
 .hero__desc {
   color: var(--muted-foreground);
   font-size: 18px;
+  white-space: wrap;
+}
+
+@media (max-width: 930px) {
+  .hero__badge {
+    font-size: 0.675rem;
+  }
 }

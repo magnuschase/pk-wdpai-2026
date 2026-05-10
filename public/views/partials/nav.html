@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="public/styles/nav.css" />
 
-<nav class="nav">
+<nav class="nav" id="navbar">
   <div class="nav__logo">
     <?php include __DIR__ . '/icons/cog.html'; ?>
     <h1>TERRA & CRAFT</h1>
@@ -10,5 +10,102 @@
     <a href="/order">Custom Order Wizard</a>
     <a href="/contact">Contact</a>
   </div>
-  <div class="nav__user"><?php include __DIR__ . '/icons/user.html'; ?></div>
+  <div class="nav__user">
+    <div id="user-dropdown-toggle">
+      <?php include __DIR__ . '/icons/user.html'; ?>
+    </div>
+    <!-- TODO: Enable dropdown only for logged users -->
+    <div class="dropdown dropdown--hidden">
+      <!-- TODO: Display only for admins -->
+      <a href="/admin">Admin Panel</a>
+      <!-- TODO: Handle logout -->
+      <a href="/logout">Logout</a>
+    </div>
+  </div>
+  <div class="mobile-only">
+    <div id="navOpenBtn">
+      <svg
+        clip-rule="evenodd"
+        fill-rule="evenodd"
+        stroke-linejoin="round"
+        stroke-miterlimit="2"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="currentColor"
+      >
+        <path
+          d="m12.002 2c5.518 0 9.998 4.48 9.998 9.998 0 5.517-4.48 9.997-9.998 9.997-5.517 0-9.997-4.48-9.997-9.997 0-5.518 4.48-9.998 9.997-9.998zm2.498 9.995c0-.69.56-1.25 1.25-1.25s1.25.56 1.25 1.25-.56 1.25-1.25 1.25-1.25-.56-1.25-1.25zm-3.75 0c0-.69.56-1.25 1.25-1.25s1.25.56 1.25 1.25-.56 1.25-1.25 1.25-1.25-.56-1.25-1.25zm-3.75 0c0-.69.56-1.25 1.25-1.25s1.25.56 1.25 1.25-.56 1.25-1.25 1.25-1.25-.56-1.25-1.25z"
+        />
+      </svg>
+    </div>
+  </div>
 </nav>
+
+<aside class="sidebar hidden" id="sidebar">
+  <div class="sidebar__top">
+    <div class="sidebar__logo">
+      <?php include __DIR__ . '/icons/cog.html'; ?>
+      <h1>TERRA & CRAFT</h1>
+    </div>
+
+    <div class="sidebar__items">
+      <a href="/">Gallery</a>
+      <a href="/order">Custom Order Wizard</a>
+      <a href="/contact">Contact</a>
+    </div>
+  </div>
+  <!-- TODO: Display only for logged users, otherwise show login -->
+  <div class="sidebar__user">
+    <!-- TODO: Display only for admins -->
+    <a href="/admin">Admin Panel</a>
+    <!-- TODO: Handle logout -->
+    <a href="/logout">Logout</a>
+  </div>
+</aside>
+
+<script>
+  const navOpenBtn = document.querySelector("#navOpenBtn");
+  const sidebar = document.getElementById("sidebar");
+  const navbar = document.getElementById("navbar");
+
+  navOpenBtn.addEventListener("click", () => {
+    navbar.classList.toggle("hidden");
+    sidebar.classList.toggle("hidden");
+  });
+
+  window.addEventListener("click", (event) => {
+    // If the click is outside the sidebar and the sidebar is open, close it
+    if (
+      !sidebar.contains(event.target) &&
+      !navOpenBtn.contains(event.target) &&
+      !sidebar.classList.contains("hidden")
+    ) {
+      sidebar.classList.add("hidden");
+      navbar.classList.remove("hidden");
+    }
+  });
+
+  const userDropdownToggle = document.getElementById("user-dropdown-toggle");
+  const userDropdown = document.querySelector(".dropdown");
+
+  userDropdownToggle.addEventListener("click", () => {
+    userDropdown.classList.toggle("dropdown--hidden");
+  });
+
+  window.addEventListener("click", (event) => {
+    if (
+      !userDropdown.contains(event.target) &&
+      !userDropdownToggle.contains(event.target) &&
+      !userDropdown.classList.contains("dropdown--hidden")
+    ) {
+      userDropdown.classList.add("dropdown--hidden");
+    }
+  });
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 930) {
+      sidebar.classList.add("hidden");
+      navbar.classList.remove("hidden");
+    }
+  });
+</script>
