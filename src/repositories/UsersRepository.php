@@ -1,11 +1,12 @@
 <?php
 
 require_once 'Repository.php';
+require_once __DIR__ . '/../models/User.php';
 
 class UsersRepository extends Repository
 {
 
-	public function getUsers(): ?array
+	public function getUsers(): array
 	{
 		$query = $this->database->connect()->prepare(
 			"
@@ -14,11 +15,15 @@ class UsersRepository extends Repository
 		);
 		$query->execute();
 
-		$users = $query->fetchAll(PDO::FETCH_ASSOC);
+		$users = [];
+		while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+			$users[] = $this->mapRowToUser($row);
+		}
+
 		return $users;
 	}
 
-	public function getUserByEmail(string $email)
+	public function getUserByEmail(string $email): ?User
 	{
 		$query = $this->database->connect()->prepare(
 			"
@@ -28,8 +33,12 @@ class UsersRepository extends Repository
 		$query->bindParam(':email', $email);
 		$query->execute();
 
-		$user = $query->fetch(PDO::FETCH_ASSOC);
-		return $user;
+		$row = $query->fetch(PDO::FETCH_ASSOC);
+		if (!$row) {
+			return null;
+		}
+
+		return $this->mapRowToUser($row);
 	}
 
 	public function createUser(
@@ -48,5 +57,17 @@ class UsersRepository extends Repository
 			$email,
 			$hashedPassword
 		]);
+	}
+
+	private function mapRowToUser(array $row): User
+	{
+		return new User(
+			$row['username'],
+			$row['email'],
+			$row['password'],
+			(int) $row['id'],
+			in_array($row['is_active'] ?? true, [true, 1, '1', 't'], true),
+			in_array($row['is_admin'] ?? false, [true, 1, '1', 't'], true)
+		);
 	}
 }

@@ -9,9 +9,9 @@
     <?php include __DIR__ . '/partials/nav.html'; ?>
 
     <main>
-      <?php foreach($users as $key=>$value): ?>
-      <span><?= $value["username"]; ?></span>
-      <span><?= $value["email"]; ?></span>
+      <?php foreach ($users as $user): ?>
+      <span><?= $user->getUsername(); ?></span>
+      <span><?= $user->getEmail(); ?></span>
       <br />
       <?php endforeach; ?>
     </main>

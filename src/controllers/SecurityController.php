@@ -1,6 +1,7 @@
 <?php
 
 require_once 'AppController.php';
+require_once __DIR__ . '/../repositories/UsersRepository.php';
 
 class SecurityController extends AppController
 {
@@ -26,18 +27,18 @@ class SecurityController extends AppController
 			return $this->render('login', ['messages' => 'User not found']);
 		}
 
-		if (!password_verify($password, $user['password'])) {
+		if (!password_verify($password, $user->getPassword())) {
 			return $this->render('login', ['messages' => 'Wrong password']);
 		}
 
 		// Create user session
 		session_regenerate_id(true); // new session id for security purposes
 
-		$_SESSION['user_id'] = $user['id'];
-		$_SESSION['user_email'] = $user['email'];
-		$_SESSION['user_name'] = $user['username'];
+		$_SESSION['user_id'] = $user->getId();
+		$_SESSION['user_email'] = $user->getEmail();
+		$_SESSION['user_name'] = $user->getUsername();
 		$_SESSION['is_logged_in'] = true;
-		$_SESSION['is_admin'] = in_array($user['is_admin'], [true, 1, '1', 't'], true);
+		$_SESSION['is_admin'] = $user->isAdmin();
 
 		$url = "http://$_SERVER[HTTP_HOST]";
 		header("Location: {$url}/dashboard");
