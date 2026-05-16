@@ -5,6 +5,12 @@ require_once __DIR__ . '/../repositories/UsersRepository.php';
 
 class SecurityController extends AppController
 {
+	private UsersRepository $userRepository;
+
+	public function __construct()
+	{
+		$this->userRepository = new UsersRepository();
+	}
 
 	public function login()
 	{
@@ -19,9 +25,7 @@ class SecurityController extends AppController
 			return $this->render('login', ['messages' => 'Fill all fields']);
 		}
 
-		//TODO get from database user with given email, userRepository can be created once (singleton), and assigned in constructor
-		$userRepository = new UsersRepository();
-		$user = $userRepository->getUserByEmail($email);
+		$user = $this->userRepository->getUserByEmail($email);
 
 		if (!$user) {
 			return $this->render('login', ['messages' => 'User not found']);
@@ -46,8 +50,6 @@ class SecurityController extends AppController
 
 	public function register()
 	{
-		$userRepository = new UsersRepository();
-
 		if ($this->isPost()) {
 			$email = trim($_POST['email'] ?? '');
 			$password = $_POST['password'] ?? '';
@@ -62,13 +64,13 @@ class SecurityController extends AppController
 				return $this->render('register', ['messages' => 'Passwords do not match']);
 			}
 
-			$user = $userRepository->getUserByEmail($email);
+			$user = $this->userRepository->getUserByEmail($email);
 			if ($user) {
 				return $this->render("register", ["messages" => "User exists"]);
 			}
 
 			$hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-			$userRepository->createUser($username, $email, $hashedPassword);
+			$this->userRepository->createUser($username, $email, $hashedPassword);
 
 			$url = "http://$_SERVER[HTTP_HOST]";
 			header("Location: {$url}/login");
