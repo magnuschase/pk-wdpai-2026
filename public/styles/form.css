@@ -14,7 +14,8 @@
   }
 
   .two-col-wrapper--padded {
-    padding: 0rem 2rem;
+    gap: 4rem;
+    padding: 0rem 4rem;
   }
 }
 

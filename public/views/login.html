@@ -1,24 +1,82 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login page</title>
+    <?php include __DIR__ . '/partials/head.html'; ?>
+    <link rel="stylesheet" href="public/styles/form.css" />
+    <title>Terra & Craft | Login</title>
   </head>
   <body>
-    <form method="POST" action="\login">
-      <h1>LOGIN</h1>
+    <?php include __DIR__ . '/partials/nav.html'; ?>
 
-      <?php if(isset($messages)): ?>
+    <main>
+      <div class="center-content">
+        <div class="two-col-wrapper two-col-wrapper--padded">
+          <?php include __DIR__ . '/partials/hero.html'; ?>
+          <div class="card">
+            <div class="card__header">
+              <div class="card__title">Welcome Back</div>
+              <p>Enter your credentials to access our studio portal.</p>
+            </div>
+            <form method="POST" action="\login" class="form">
+              <label for="email" class="form__label">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M24 21h-24v-18h24v18zm-23-16.477v15.477h22v-15.477l-10.999 10-11.001-10zm21.089-.523h-20.176l10.088 9.171 10.088-9.171z"
+                  />
+                </svg>
+                Email
+              </label>
+              <input
+                name="email"
+                type="email"
+                class="form__input"
+                placeholder="e.g. jane@example.com"
+              />
+              <label for="password" class="form__label">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M6 8v-2c0-3.313 2.687-6 6-6 3.312 0 6 2.687 6 6v2h-2v-2c0-2.206-1.795-4-4-4s-4 1.794-4 4v2h-2zm-3 2v14h18v-14h-18z"
+                  />
+                </svg>
+                Password
+              </label>
+              <input
+                name="password"
+                type="password"
+                class="form__input"
+                placeholder="********"
+              />
 
-      <p class="messages"><?= $messages ?></p>
+              <?php if(isset($messages)): ?>
 
-      <?php endif; ?>
-      <input name="email" type="email" placeholder="Twój email" />
-      <input name="password" type="password" placeholder="Twoje hasło" />
-      <button type="submit">LOGIN</button>
+              <p class="messages"><?= $messages ?></p>
 
-      <a href="/register">zarejestruj się!</a>
-    </form>
+              <?php endif; ?>
+
+              <button type="submit" class="form__submit">Log In</button>
+
+              <div class="form__footer">
+                <span>Don't have an account?</span>
+                <a href="/register">Sign Up</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
   </body>
 </html>
