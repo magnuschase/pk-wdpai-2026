@@ -8,6 +8,7 @@ class DashboardController extends AppController
 
 	public function dashboard()
 	{
+		$this->requireLogin();
 		// TODO: pobieranie danych z bazy
 		// wstawianie zmiennych na widok
 		$title = "DASHBOARD";

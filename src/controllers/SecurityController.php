@@ -30,8 +30,15 @@ class SecurityController extends AppController
 			return $this->render('login', ['messages' => 'Wrong password']);
 		}
 
-		// TODO możemy przechowywać sesje użytkowika lub token
-		// setcookie("username", $user['email'], time() + 3600, '/');
+		// Create user session
+		session_regenerate_id(true); // new session id for security purposes
+
+		$_SESSION['user_id'] = $user['id'];
+		$_SESSION['user_email'] = $user['email'];
+		$_SESSION['user_name'] = $user['username'];
+		$_SESSION['is_logged_in'] = true;
+		$_SESSION['is_admin'] = in_array($user['is_admin'], [true, 1, '1', 't'], true);
+
 		$url = "http://$_SERVER[HTTP_HOST]";
 		header("Location: {$url}/dashboard");
 	}
@@ -68,5 +75,37 @@ class SecurityController extends AppController
 		}
 
 		return $this->render("register");
+	}
+
+	public function logout()
+	{
+		// Check if session is not already started
+		if (session_status() === PHP_SESSION_NONE) {
+			session_start();
+		}
+
+		// Clear all session data
+		$_SESSION = [];
+
+		// Optional: remove client-side session cookie
+		if (ini_get("session.use_cookies")) {
+			$params = session_get_cookie_params();
+			setcookie(
+				session_name(),
+				'',
+				time() - 42000,
+				$params["path"],
+				$params["domain"],
+				$params["secure"],
+				$params["httponly"]
+			);
+		}
+
+		// Destroy the session
+		session_destroy();
+
+		// Redirect to the login page
+		$url = "http://$_SERVER[HTTP_HOST]";
+		header("Location: {$url}/login");
 	}
 }
