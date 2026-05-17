@@ -186,12 +186,12 @@ CREATE TRIGGER trg_orders_updated_at
 
 -- Users (all passwords are bcrypt hash of "password123")
 INSERT INTO users (username, email, password, is_active, is_admin) VALUES
-('admin',       'admin@terracraft.com',  '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', TRUE, TRUE),
-('alice_moore', 'alice@example.com',     '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', TRUE, FALSE),
-('ben_carter',  'ben@example.com',       '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', TRUE, FALSE),
-('clara_di',    'clara@example.com',     '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', FALSE, FALSE),
-('david_kim',   'david@example.com',     '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', TRUE, FALSE),
-('eva_green',   'eva@example.com',       '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', TRUE, FALSE);
+('admin',       'admin@terracraft.com',  '$2y$10$mP5XvHZ83r5KaiND98hs4usqnqWbd1Ar3e8.okYQ9Efno0W12Ab2C', TRUE,  TRUE),
+('alice_moore', 'alice@example.com',     '$2y$10$mP5XvHZ83r5KaiND98hs4usqnqWbd1Ar3e8.okYQ9Efno0W12Ab2C', TRUE,  FALSE),
+('ben_carter',  'ben@example.com',       '$2y$10$mP5XvHZ83r5KaiND98hs4usqnqWbd1Ar3e8.okYQ9Efno0W12Ab2C', TRUE,  FALSE),
+('clara_di',    'clara@example.com',     '$2y$10$mP5XvHZ83r5KaiND98hs4usqnqWbd1Ar3e8.okYQ9Efno0W12Ab2C', FALSE, FALSE),
+('david_kim',   'david@example.com',     '$2y$10$mP5XvHZ83r5KaiND98hs4usqnqWbd1Ar3e8.okYQ9Efno0W12Ab2C', TRUE,  FALSE),
+('eva_green',   'eva@example.com',       '$2y$10$mP5XvHZ83r5KaiND98hs4usqnqWbd1Ar3e8.okYQ9Efno0W12Ab2C', TRUE,  FALSE);
 
 -- User profiles (1:1 relation)
 INSERT INTO user_profiles (user_id, avatar_url, bio, phone) VALUES
