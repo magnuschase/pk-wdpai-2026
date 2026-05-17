@@ -36,7 +36,7 @@ class AppController
 		echo $output;
 	}
 
-	protected function requireLogin()
+	protected function requireLogin(): void
 	{
 		if (session_status() === PHP_SESSION_NONE) {
 			session_start();
@@ -47,5 +47,24 @@ class AppController
 			header("Location: {$url}/login");
 			exit();
 		}
+	}
+
+	protected function requireAdmin(): void
+	{
+		$this->requireLogin();
+
+		if (empty($_SESSION['is_admin'])) {
+			http_response_code(403);
+			include 'public/views/403.html';
+			exit();
+		}
+	}
+
+	protected function json(mixed $data, int $status = 200): void
+	{
+		http_response_code($status);
+		header('Content-Type: application/json');
+		echo json_encode($data);
+		exit();
 	}
 }

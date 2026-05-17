@@ -1,60 +1,55 @@
 <?php
 
 require_once 'src/controllers/SecurityController.php';
-require_once 'src/controllers/DashboardController.php';
+require_once 'src/controllers/GalleryController.php';
+require_once 'src/controllers/OrderController.php';
+require_once 'src/controllers/AdminOrderController.php';
+require_once 'src/controllers/AdminUserController.php';
 
-// TODO: musimy zapewnic, ze utworzony 
-// obiekt kontrollera ma tylko jedna instancję - SINGLETON
-
-// TODO: 2 /dashboard -- wszystkei dnae
-// /dashboard/12234 -- wyciagnie nam jakis elemtn o wskaznaym ID 12234
-// REGEX
 class Routing
 {
+    // Exact path → [controller, action]
+    private static array $exactRoutes = [
+        ''                    => ['SecurityController',    'login'],
+        'login'               => ['SecurityController',    'login'],
+        'register'            => ['SecurityController',    'register'],
+        'logout'              => ['SecurityController',    'logout'],
+        'gallery'             => ['GalleryController',     'index'],
+        'gallery/favourite'   => ['GalleryController',     'toggleFavourite'],
+        'order'               => ['OrderController',       'wizard'],
+        'admin/orders'        => ['AdminOrderController',  'index'],
+        'admin/users'         => ['AdminUserController',   'index'],
+        'admin/users/create'  => ['AdminUserController',   'create'],
+    ];
 
-	public static $routes = [
-		"login" => [
-			"controller" => "SecurityController",
-			"action" => "login"
-		],
-		"dashboard" => [
-			"controller" => "DashboardController",
-			"action" => "dashboard"
-		],
-		"" => [
-			"controller" => "SecurityController",
-			"action" => "login"
-		],
-		"register" => [
-			"controller" => "SecurityController",
-			"action" => "register"
-		],
-		"logout" => [
-			"controller" => "SecurityController",
-			"action" => "logout"
-		],
-	];
+    // Regex path → [controller, action]  — first capture group becomes $id
+    private static array $paramRoutes = [
+        '#^admin/orders/(\d+)$#'        => ['AdminOrderController', 'show'],
+        '#^admin/orders/(\d+)/status$#' => ['AdminOrderController', 'updateStatus'],
+        '#^admin/orders/(\d+)/note$#'   => ['AdminOrderController', 'addNote'],
+        '#^admin/users/(\d+)/update$#'  => ['AdminUserController',  'update'],
+        '#^admin/users/(\d+)/delete$#'  => ['AdminUserController',  'delete'],
+    ];
 
-	public static function run(string $path)
-	{
-		// TODO: check with array_key_exists
-		switch ($path) {
-			case 'dashboard':
-			case '':
-			case 'login':
-			case 'register':
-			case 'logout':
-				$controller = Routing::$routes[$path]["controller"];
-				$action = Routing::$routes[$path]["action"];
+    public static function run(string $path): void
+    {
+        // Exact match
+        if (array_key_exists($path, self::$exactRoutes)) {
+            [$controllerClass, $action] = self::$exactRoutes[$path];
+            (new $controllerClass())->$action(null);
+            return;
+        }
 
-				$controllerObj = new $controller;
-				$id = null;
+        // Parameterised match
+        foreach (self::$paramRoutes as $pattern => [$controllerClass, $action]) {
+            if (preg_match($pattern, $path, $matches)) {
+                (new $controllerClass())->$action((int) $matches[1]);
+                return;
+            }
+        }
 
-				$controllerObj->$action($id);
-				break;
-			default:
-				include 'public/views/404.html';
-				break;
-		}
-	}
+        // 404
+        http_response_code(404);
+        include 'public/views/404.html';
+    }
 }

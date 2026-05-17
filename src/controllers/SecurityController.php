@@ -18,6 +18,12 @@ class SecurityController extends AppController
 	public function login()
 	{
 		if (!$this->isPost()) {
+			if (!empty($_SESSION['is_logged_in'])) {
+				$url = "http://$_SERVER[HTTP_HOST]";
+				$redirect = !empty($_SESSION['is_admin']) ? '/admin/users' : '/gallery';
+				header("Location: {$url}{$redirect}");
+				exit();
+			}
 			return $this->render('login');
 		}
 
@@ -48,7 +54,8 @@ class SecurityController extends AppController
 		$_SESSION['is_admin'] = $user->isAdmin();
 
 		$url = "http://$_SERVER[HTTP_HOST]";
-		header("Location: {$url}/dashboard");
+		$redirect = $user->isAdmin() ? '/admin/users' : '/gallery';
+		header("Location: {$url}{$redirect}");
 	}
 
 	public function register()
