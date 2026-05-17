@@ -6,8 +6,9 @@
     <h1>TERRA & CRAFT</h1>
   </div>
   <div class="nav__items">
-    <a href="/">Gallery</a>
+    <a href="/gallery">Gallery</a>
     <a href="/order">Custom Order Wizard</a>
+    <!-- TODO: Instead of contact, we should have order history page for regular users + favourites  -->
     <a href="/contact">Contact</a>
   </div>
   <?php if (!empty($_SESSION['is_logged_in'])): ?>
@@ -81,6 +82,7 @@
         </svg>
         Custom Order Wizard
       </a>
+      <!-- TODO: Instead of contact, we should have order history page for regular users + favourites  -->
       <a class="sidebar__item" href="/contact">
         <svg
           width="16"

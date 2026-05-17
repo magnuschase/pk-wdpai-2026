@@ -19,6 +19,12 @@
   }
 }
 
+@media (max-width: 930px) {
+  .center-content {
+    padding: 2rem 1rem 1rem 1rem;
+  }
+}
+
 @media (min-width: 930px) {
   .center-content {
     min-height: 80vh;
@@ -34,7 +40,7 @@
   background: rgba(255, 255, 255, 0);
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  color: var(--muted-foreground);
+  color: var(--text-muted);
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -60,7 +66,7 @@
 
 .form__label {
   font-size: 0.875rem;
-  color: var(--muted-foreground);
+  color: var(--text-muted);
   font-weight: 500;
   display: flex;
   gap: 0.5rem;

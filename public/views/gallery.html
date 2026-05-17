@@ -2,14 +2,134 @@
 <html lang="en">
   <head>
     <?php include __DIR__ . '/partials/head.html'; ?>
-    <title>Terra & Craft | Gallery</title>
+    <link rel="stylesheet" href="/public/styles/gallery.css" />
+    <title>Gallery — Terra &amp; Craft</title>
   </head>
   <body>
     <?php include __DIR__ . '/partials/nav.html'; ?>
+
     <main>
-      <p style="color:var(--muted-foreground);text-align:center;padding:4rem;">
-        Gallery view — coming soon.
-      </p>
+      <!-- Hero section -->
+      <section class="gallery-hero">
+        <h2>Our Gallery</h2>
+        <p>
+          Explore handcrafted ceramics — each piece shaped with care and fired
+          with character.
+        </p>
+
+        <!-- Category filter links -->
+        <div class="gallery-filters">
+          <a
+            href="/gallery"
+            class="filter-btn <?= $activeCategory === null ? 'filter-btn--active' : '' ?>"
+          >
+            All
+          </a>
+          <?php foreach ($categories as $cat): ?>
+          <a
+            href="/gallery?category=<?= htmlspecialchars($cat->getSlug()) ?>"
+            class="filter-btn <?= ($activeCategory && $activeCategory->getId() === $cat->getId()) ? 'filter-btn--active' : '' ?>"
+          >
+            <?= htmlspecialchars($cat->getName()) ?>
+          </a>
+          <?php endforeach; ?>
+        </div>
+      </section>
+
+      <!-- Masonry grid -->
+      <div class="gallery-grid" id="gallery-grid">
+        <?php if (empty($items)): ?>
+        <p
+          style="
+            text-align: center;
+            color: var(--text-muted);
+            padding: 3rem 0;
+            column-span: all;
+          "
+        >
+          No items found in this category yet.
+        </p>
+        <?php endif; ?> <?php foreach ($items as $item): ?>
+        <article class="gallery-item">
+          <?php if ($item->getImageUrl()): ?>
+          <img
+            class="gallery-item__img"
+            src="<?= htmlspecialchars($item->getImageUrl()) ?>"
+            alt="<?= htmlspecialchars($item->getName()) ?>"
+            loading="lazy"
+          />
+          <?php else: ?>
+          <div
+            class="gallery-item__img"
+            style="
+              height: 16rem;
+              background: var(--surface-alt);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: var(--text-muted);
+              font-size: 2.5rem;
+            "
+          >
+            &#9728;
+          </div>
+          <?php endif; ?>
+
+          <!-- Hover overlay with item info and favourite button -->
+          <div class="gallery-item__overlay">
+            <div class="gallery-item__info">
+              <div>
+                <p class="gallery-item__name">
+                  <?= htmlspecialchars($item->getName()) ?>
+                </p>
+                <p class="gallery-item__meta">
+                  <?php if ($item->getMaterial()): ?><?=
+                  htmlspecialchars($item->getMaterial()) ?> &middot; <?php
+                  endif; ?> $<?= number_format($item->getPrice(), 2) ?>
+                </p>
+              </div>
+
+              <!-- Favourite toggle — handled via gallery.js Fetch API call -->
+              <button
+                class="fav-btn js-fav-btn <?= in_array($item->getId(), $favouriteIds) ? 'is-faved' : '' ?>"
+                data-item-id="<?= $item->getId() ?>"
+                aria-label="Toggle favourite"
+              >
+                <?php if (in_array($item->getId(), $favouriteIds)): ?>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"
+                  />
+                </svg>
+                <?php else: ?>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M12 4.419c-2.826-5.695-11.999-4.064-11.999 3.27 0 7.27 9.903 10.938 11.999 15.311 2.096-4.373 12-8.041 12-15.311 0-7.327-9.17-8.972-12-3.27z"
+                  />
+                </svg>
+                <?php endif; ?>
+              </button>
+            </div>
+          </div>
+        </article>
+        <?php endforeach; ?>
+      </div>
+
+      <div class="gallery-load-more"></div>
     </main>
+
+    <script src="/public/scripts/gallery.js"></script>
   </body>
 </html>

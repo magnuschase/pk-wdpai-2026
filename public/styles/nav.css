@@ -6,12 +6,16 @@
   justify-content: space-between;
   gap: 1rem;
   color: var(--nav-foreground);
-  background-color: var(--bg-dark);
-  border-bottom: 1px solid #453025;
+  /* Semi-transparent frosted glass — stays readable when content scrolls behind */
+  background-color: rgba(34, 22, 16, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
   padding: 0.5rem 1rem;
   position: sticky;
   top: 0;
   left: 0;
+  z-index: 50;
 }
 
 .nav__logo {
@@ -110,10 +114,9 @@
 }
 
 .sidebar {
-  width: 75vw;
+  width: min(20rem, 85vw);
   height: 100vh;
   background-color: #221610;
-  opacity: 0.98;
   position: fixed;
   top: 0;
   left: 0;
@@ -121,6 +124,18 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  /* Always above the sticky nav */
+  z-index: 200;
+  transition: transform 0.25s ease;
+}
+
+/* Full-screen dimming overlay behind the sidebar */
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 199;
+  cursor: pointer;
 }
 
 .sidebar__top {

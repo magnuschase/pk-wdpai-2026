@@ -1,15 +1,283 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <?php include __DIR__ . '/partials/head.html'; ?>
-    <title>Terra & Craft | Custom Order Wizard</title>
-  </head>
-  <body>
-    <?php include __DIR__ . '/partials/nav.html'; ?>
-    <main>
-      <p style="color:var(--muted-foreground);text-align:center;padding:4rem;">
-        Order wizard — coming soon.
-      </p>
-    </main>
-  </body>
+<head>
+  <?php include __DIR__ . '/partials/head.html'; ?>
+  <link rel="stylesheet" href="/public/styles/order-wizard.css" />
+  <link rel="stylesheet" href="/public/styles/admin.css" />
+  <title>Custom Order Wizard — Terra &amp; Craft</title>
+</head>
+<body>
+  <?php include __DIR__ . '/partials/nav.html'; ?>
+
+  <main class="wizard-page">
+
+    <!-- Page hero -->
+    <div class="wizard-hero">
+      <p class="wizard-hero__eyebrow">Create Your Masterpiece</p>
+      <h1>Custom Order Wizard</h1>
+      <p>Design a piece that is uniquely yours. Follow the steps below to configure your custom ceramic order.</p>
+    </div>
+
+    <!-- Step progress indicator (purely visual, JS drives active state) -->
+    <div class="wizard-steps" id="wizard-steps">
+      <div class="wizard-step wizard-step--active" data-step="1">
+        <div class="wizard-step__num">1</div>
+        <span class="wizard-step__label">Object</span>
+      </div>
+      <div class="wizard-step" data-step="2">
+        <div class="wizard-step__num">2</div>
+        <span class="wizard-step__label">Glaze</span>
+      </div>
+      <div class="wizard-step" data-step="3">
+        <div class="wizard-step__num">3</div>
+        <span class="wizard-step__label">Size</span>
+      </div>
+      <div class="wizard-step" data-step="4">
+        <div class="wizard-step__num">4</div>
+        <span class="wizard-step__label">Details</span>
+      </div>
+      <div class="wizard-step" data-step="5">
+        <div class="wizard-step__num">5</div>
+        <span class="wizard-step__label">Review</span>
+      </div>
+    </div>
+
+    <!-- Form — all steps in one POST, JS shows/hides panels -->
+    <form method="POST" action="/order" enctype="multipart/form-data" id="wizard-form" novalidate>
+
+      <!-- ===== STEP 1: Choose Object Type ===== -->
+      <div class="wizard-panel is-active" id="step-1">
+        <div class="wizard-panel__header">
+          <span class="wizard-panel__num">1</span>
+          <h2 class="wizard-panel__title">Choose Your Object</h2>
+        </div>
+
+        <div class="object-grid">
+          <?php foreach ($objectTypes as $i => $type): ?>
+          <div class="object-option">
+            <input type="radio"
+                   id="obj_<?= $type->getId() ?>"
+                   name="object_type_id"
+                   value="<?= $type->getId() ?>"
+                   <?= $i === 0 ? 'checked' : '' ?>
+                   required />
+            <label class="object-option__label" for="obj_<?= $type->getId() ?>">
+              <span class="object-option__icon">
+								<!-- TODO: Swap to SVG icons -->
+                <?php
+                  // Map common object type names to simple Unicode symbols
+                  $icons = [
+                    'mug'       => '☕',
+                    'plate'     => '🍽',
+                    'bowl'      => '🥣',
+                    'vase'      => '🏺',
+                    'planter'   => '🪴',
+                    'sculpture' => '🗿',
+                  ];
+                  $key = strtolower(trim($type->getName()));
+                  echo isset($icons[$key]) ? $icons[$key] : '🎨';
+                ?>
+              </span>
+              <span class="object-option__name"><?= htmlspecialchars($type->getName()) ?></span>
+              <span class="object-option__check">✓</span>
+            </label>
+          </div>
+          <?php endforeach; ?>
+        </div>
+
+        <div class="wizard-nav wizard-nav--end">
+          <button type="button" class="btn btn--primary js-next" data-next="2">Next →</button>
+        </div>
+      </div>
+
+      <!-- ===== STEP 2: Select Glaze ===== -->
+      <div class="wizard-panel" id="step-2">
+        <div class="wizard-panel__header">
+          <span class="wizard-panel__num">2</span>
+          <h2 class="wizard-panel__title">Select Glaze &amp; Finish</h2>
+        </div>
+
+        <div class="glaze-grid">
+          <?php foreach ($glazes as $i => $glaze): ?>
+          <div class="glaze-option">
+            <input type="radio"
+                   id="glaze_<?= $glaze->getId() ?>"
+                   name="glaze_id"
+                   value="<?= $glaze->getId() ?>"
+                   <?= $i === 0 ? 'checked' : '' ?> />
+            <label
+							class="glaze-option__swatch"
+              for="glaze_<?= $glaze->getId() ?>"
+              style="background-color: <?= $glaze->getColorHex() ? htmlspecialchars($glaze->getColorHex()) : '#9a857a' ?>;"
+              title="<?= htmlspecialchars($glaze->getName()) ?>">
+						</label>
+            <span class="glaze-option__name"><?= htmlspecialchars($glaze->getName()) ?></span>
+          </div>
+          <?php endforeach; ?>
+        </div>
+
+        <div class="wizard-nav">
+          <button type="button" class="btn btn--ghost js-prev" data-prev="1">← Back</button>
+          <button type="button" class="btn btn--primary js-next" data-next="3">Next →</button>
+        </div>
+      </div>
+
+      <!-- ===== STEP 3: Size & Quantity ===== -->
+      <div class="wizard-panel" id="step-3">
+        <div class="wizard-panel__header">
+          <span class="wizard-panel__num">3</span>
+          <h2 class="wizard-panel__title">Size &amp; Quantity</h2>
+        </div>
+
+        <div>
+          <p class="wizard-section-title">Choose a size</p>
+          <div class="size-grid">
+            <div class="size-option">
+              <input type="radio" id="size_small" name="size_type" value="small" checked />
+              <label class="size-option__label" for="size_small">
+                <span class="size-option__name">Small</span>
+                <span class="size-option__desc">Up to 15 cm</span>
+              </label>
+            </div>
+            <div class="size-option">
+              <input type="radio" id="size_medium" name="size_type" value="medium" />
+              <label class="size-option__label" for="size_medium">
+                <span class="size-option__name">Medium</span>
+                <span class="size-option__desc">15 – 30 cm</span>
+              </label>
+            </div>
+            <div class="size-option">
+              <input type="radio" id="size_large" name="size_type" value="large" />
+              <label class="size-option__label" for="size_large">
+                <span class="size-option__name">Large</span>
+                <span class="size-option__desc">30 – 50 cm</span>
+              </label>
+            </div>
+            <div class="size-option">
+              <input type="radio" id="size_custom" name="size_type" value="custom" />
+              <label class="size-option__label" for="size_custom">
+                <span class="size-option__name">Custom</span>
+                <span class="size-option__desc">Specify below</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Custom dimensions field — shown via JS when "Custom" is selected -->
+        <div class="field-group" id="custom-dimensions-wrap" style="display:none;">
+          <label class="field-label" for="custom_dimensions">Custom dimensions</label>
+          <input class="field-input"
+                 type="text"
+                 id="custom_dimensions"
+                 name="custom_dimensions"
+                 placeholder="e.g. 25 cm × 12 cm × 10 cm"
+                 maxlength="120"/>
+        </div>
+
+        <!-- Budget range -->
+        <div>
+          <p class="wizard-section-title">Budget (optional)</p>
+          <div style="display:flex;gap:1rem;align-items:center;">
+            <div class="field-group" style="flex:1;">
+              <label class="field-label" for="budget_min">Min ($)</label>
+              <input class="field-input" type="number" id="budget_min" name="budget_min"
+                     min="0" step="1" placeholder="50" />
+            </div>
+            <span style="color:var(--text-muted);padding-top:1.5rem;">–</span>
+            <div class="field-group" style="flex:1;">
+              <label class="field-label" for="budget_max">Max ($)</label>
+              <input class="field-input" type="number" id="budget_max" name="budget_max"
+                     min="0" step="1" placeholder="200" />
+            </div>
+          </div>
+        </div>
+
+        <div class="wizard-nav">
+          <button type="button" class="btn btn--ghost js-prev" data-prev="2">← Back</button>
+          <button type="button" class="btn btn--primary js-next" data-next="4">Next →</button>
+        </div>
+      </div>
+
+      <!-- ===== STEP 4: Special Requests & Inspiration Images ===== -->
+      <div class="wizard-panel" id="step-4">
+        <div class="wizard-panel__header">
+          <span class="wizard-panel__num">4</span>
+          <h2 class="wizard-panel__title">Details &amp; Inspiration</h2>
+        </div>
+
+        <!-- Special requests textarea -->
+        <div class="field-group">
+          <label class="field-label" for="special_requests">Special requests / notes</label>
+          <textarea class="field-textarea"
+                    id="special_requests"
+                    name="special_requests"
+                    rows="4"
+                    maxlength="1000"
+                    placeholder="Describe your vision — engravings, patterns, colours, occasion, anything that helps us understand what you have in mind..."></textarea>
+          <p class="char-counter"><span id="req-count">0</span> / 1000</p>
+        </div>
+
+        <!-- Inspiration image upload -->
+        <div>
+          <p class="wizard-section-title">Inspiration images (optional)</p>
+          <div class="file-drop" id="file-drop-zone">
+            <input type="file"
+                   name="images[]"
+                   id="image-upload"
+                   accept="image/jpeg,image/png,image/webp"
+                   multiple />
+            <div class="file-drop__icon">📷</div>
+            <p class="file-drop__text">Drag &amp; drop images here or click to browse</p>
+            <p class="file-drop__sub">JPG, PNG or WebP · max 5 files</p>
+          </div>
+          <div class="file-previews" id="file-previews"></div>
+        </div>
+
+        <div class="wizard-nav">
+          <button type="button" class="btn btn--ghost js-prev" data-prev="3">← Back</button>
+          <button type="button" class="btn btn--primary js-next" data-next="5">Review Order →</button>
+        </div>
+      </div>
+
+      <!-- ===== STEP 5: Review & Submit ===== -->
+      <div class="wizard-panel" id="step-5">
+        <div class="wizard-panel__header">
+          <span class="wizard-panel__num">5</span>
+          <h2 class="wizard-panel__title">Review Your Order</h2>
+        </div>
+
+        <div class="summary-grid" id="order-summary">
+          <div class="summary-row">
+            <span class="summary-row__label">Object Type</span>
+            <span class="summary-row__value" id="sum-object">—</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-row__label">Glaze</span>
+            <span class="summary-row__value" id="sum-glaze">—</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-row__label">Size</span>
+            <span class="summary-row__value" id="sum-size">—</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-row__label">Budget</span>
+            <span class="summary-row__value" id="sum-budget">Not specified</span>
+          </div>
+          <div class="summary-row" style="grid-column: 1 / -1;">
+            <span class="summary-row__label">Special Requests</span>
+            <span class="summary-row__value" id="sum-requests">None</span>
+          </div>
+        </div>
+
+        <div class="wizard-nav">
+          <button type="button" class="btn btn--ghost js-prev" data-prev="4">← Back</button>
+          <button type="submit" class="btn btn--primary">Place Order ✓</button>
+        </div>
+      </div>
+
+    </form>
+  </main>
+
+  <script src="/public/scripts/order-wizard.js"></script>
+</body>
 </html>

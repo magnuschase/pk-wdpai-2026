@@ -2,14 +2,286 @@
 <html lang="en">
   <head>
     <?php include __DIR__ . '/../partials/head.html'; ?>
-    <title>Terra & Craft | Admin — Orders</title>
+    <link rel="stylesheet" href="/public/styles/admin.css" />
+    <title>Orders — Admin — Terra &amp; Craft</title>
   </head>
   <body>
-    <?php include __DIR__ . '/../partials/nav.html'; ?>
-    <main>
-      <p style="color:var(--muted-foreground);text-align:center;padding:4rem;">
-        Admin orders — coming soon.
-      </p>
-    </main>
+    <div class="admin-shell">
+      <!-- ===== Sidebar ===== -->
+      <aside class="admin-sidebar">
+        <div>
+          <div class="admin-sidebar__brand">
+            <div class="admin-sidebar__icon">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"
+                />
+              </svg>
+            </div>
+            <div>
+              <div class="admin-sidebar__brand-name">Terra &amp; Craft</div>
+              <div class="admin-sidebar__brand-sub">Admin Panel</div>
+            </div>
+          </div>
+
+          <nav class="admin-nav">
+            <a
+              class="admin-nav__item admin-nav__item--active"
+              href="/admin/orders"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path
+                  d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"
+                />
+              </svg>
+              Orders
+            </a>
+            <a class="admin-nav__item" href="/admin/users">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path
+                  d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"
+                />
+              </svg>
+              Users
+            </a>
+            <hr class="admin-nav__divider" />
+            <a class="admin-nav__item" href="/gallery">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+              </svg>
+              Back to site
+            </a>
+          </nav>
+        </div>
+
+        <div class="admin-sidebar__user">
+          <div class="admin-sidebar__avatar">
+            <?= strtoupper(mb_substr($_SESSION['username'] ?? 'A', 0, 1)) ?>
+          </div>
+          <span class="admin-sidebar__username">
+            <?= htmlspecialchars($_SESSION['username'] ?? 'Admin') ?>
+          </span>
+        </div>
+      </aside>
+
+      <!-- ===== Main ===== -->
+      <main class="admin-main">
+        <div class="page-header">
+          <h1>Orders</h1>
+          <p>Review and manage all custom ceramic orders.</p>
+        </div>
+
+        <!-- Stats -->
+        <?php $statusCounts = ['pending' => 0, 'approved' => 0, 'in_progress' =>
+        0, 'completed' => 0, 'rejected' => 0]; foreach ($orders as $o) { $s =
+        $o->getStatus(); if (isset($statusCounts[$s])) $statusCounts[$s]++; } ?>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <!-- TODO: Swap to svg icon -->
+            <div class="stat-card__icon stat-card__icon--primary">📋</div>
+            <div>
+              <p class="stat-card__label">Total</p>
+              <p class="stat-card__value"><?= count($orders) ?></p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <!-- TODO: Swap to svg icon -->
+            <div class="stat-card__icon stat-card__icon--amber">⏳</div>
+            <div>
+              <p class="stat-card__label">Pending</p>
+              <p class="stat-card__value"><?= $statusCounts['pending'] ?></p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <!-- TODO: Swap to svg icon -->
+
+            <div class="stat-card__icon stat-card__icon--green">✓</div>
+            <div>
+              <p class="stat-card__label">Completed</p>
+              <p class="stat-card__value"><?= $statusCounts['completed'] ?></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Orders table -->
+        <div class="table-panel">
+          <div class="table-panel__toolbar">
+            <div class="table-search">
+              <!-- TODO: Swap to svg icon -->
+              <span class="table-search__icon">🔍</span>
+              <input
+                type="text"
+                id="order-search"
+                placeholder="Search by customer or object…"
+                autocomplete="off"
+              />
+            </div>
+            <select class="table-select" id="status-filter">
+              <option value="">All statuses</option>
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="in_progress">In Progress</option>
+              <option value="completed">Completed</option>
+              <option value="rejected">Rejected</option>
+            </select>
+          </div>
+
+          <div style="overflow-x: auto">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Customer</th>
+                  <th>Object</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="orders-tbody">
+                <?php if (empty($orders)): ?>
+                <tr>
+                  <td
+                    colspan="6"
+                    style="
+                      text-align: center;
+                      color: var(--text-muted);
+                      padding: 2rem;
+                    "
+                  >
+                    No orders yet.
+                  </td>
+                </tr>
+                <?php endif; ?> <?php foreach ($orders as $order): $customer =
+                $users[$order->getUserId()] ?? null; $objectType =
+                $order->getObjectTypeId() ?
+                ($objectTypes[$order->getObjectTypeId()] ?? null) : null; ?>
+                <tr
+                  data-customer="<?= htmlspecialchars(strtolower($customer?->getUsername() ?? '')) ?>"
+                  data-object="<?= htmlspecialchars(strtolower($objectType?->getName() ?? '')) ?>"
+                  data-status="<?= htmlspecialchars($order->getStatus()) ?>"
+                >
+                  <td style="color: var(--text-muted); font-size: 0.8125rem">
+                    #<?= $order->getId() ?>
+                  </td>
+
+                  <td>
+                    <?php if ($customer): ?>
+                    <div class="user-cell">
+                      <div class="user-cell__avatar">
+                        <?= strtoupper(mb_substr($customer->getUsername(), 0,
+                        1)) ?>
+                      </div>
+                      <div>
+                        <span class="user-cell__name"
+                          ><?= htmlspecialchars($customer->getUsername())
+                          ?></span
+                        >
+                        <span class="user-cell__email"
+                          ><?= htmlspecialchars($customer->getEmail()) ?></span
+                        >
+                      </div>
+                    </div>
+                    <?php else: ?>
+                    <span style="color: var(--text-muted)">Unknown</span>
+                    <?php endif; ?>
+                  </td>
+
+                  <td>
+                    <?= htmlspecialchars($objectType?->getName() ?? '—') ?>
+                  </td>
+
+                  <td>
+                    <span
+                      class="order-status order-status--<?= htmlspecialchars($order->getStatus()) ?>"
+                    >
+                      <?= ucfirst(str_replace('_', ' ', $order->getStatus())) ?>
+                    </span>
+                  </td>
+
+                  <td
+                    style="
+                      color: var(--text-muted);
+                      font-size: 0.8125rem;
+                      white-space: nowrap;
+                    "
+                  >
+                    <?= date('d M Y', strtotime($order->getCreatedAt())) ?>
+                  </td>
+
+                  <td>
+                    <a
+                      class="btn btn--ghost btn--sm"
+                      href="/admin/orders/<?= $order->getId() ?>"
+                    >
+                      View →
+                    </a>
+                  </td>
+                </tr>
+                <?php endforeach; ?>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="pagination">
+            <span id="visible-count"
+              ><?= count($orders) ?>
+              order<?= count($orders) !== 1 ? 's' : '' ?></span
+            >
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      const searchInput = document.getElementById("order-search");
+      const statusFilter = document.getElementById("status-filter");
+      const tbody = document.getElementById("orders-tbody");
+      const countEl = document.getElementById("visible-count");
+
+      function filterOrders() {
+        const q = searchInput.value.toLowerCase();
+        const status = statusFilter.value;
+        let visible = 0;
+
+        tbody.querySelectorAll("tr[data-status]").forEach(function (row) {
+          const customer = row.dataset.customer || "";
+          const object = row.dataset.object || "";
+          const s = row.dataset.status || "";
+
+          const matchQ = !q || customer.includes(q) || object.includes(q);
+          const matchStatus = !status || s === status;
+
+          const show = matchQ && matchStatus;
+          row.style.display = show ? "" : "none";
+          if (show) visible++;
+        });
+
+        countEl.textContent = visible + " order" + (visible !== 1 ? "s" : "");
+      }
+
+      searchInput.addEventListener("input", filterOrders);
+      statusFilter.addEventListener("change", filterOrders);
+    </script>
   </body>
 </html>
