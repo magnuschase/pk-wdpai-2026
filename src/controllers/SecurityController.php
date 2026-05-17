@@ -2,14 +2,17 @@
 
 require_once 'AppController.php';
 require_once __DIR__ . '/../repositories/UsersRepository.php';
+require_once __DIR__ . '/../repositories/UserProfilesRepository.php';
 
 class SecurityController extends AppController
 {
 	private UsersRepository $userRepository;
+	private UserProfilesRepository $userProfilesRepository;
 
 	public function __construct()
 	{
-		$this->userRepository = new UsersRepository();
+		$this->userRepository         = new UsersRepository();
+		$this->userProfilesRepository = new UserProfilesRepository();
 	}
 
 	public function login()
@@ -71,6 +74,12 @@ class SecurityController extends AppController
 
 			$hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 			$this->userRepository->createUser($username, $email, $hashedPassword);
+
+			// Create an empty profile for the new user (1:1 relation)
+			$newUser = $this->userRepository->getUserByEmail($email);
+			if ($newUser) {
+				$this->userProfilesRepository->create($newUser->getId());
+			}
 
 			$url = "http://$_SERVER[HTTP_HOST]";
 			header("Location: {$url}/login");
