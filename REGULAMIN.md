@@ -54,10 +54,6 @@ Kod aplikacji należy przechowywać na repozytorium git z dostępem publicznym l
 Należy dołączyć diagram ERD bazy danych.
 Brak duplikacji kodu. Testy (choć symboliczne): PHPUnit (1–2 testy usług/repozytoriów) + testy integracyjne endpointów (np. prosty skrypt curl/bash). Obsługa błędów globalnie (strony 400/403/404/500).
 
-## DODATKOWE WYMAGANIA
-
-Walidacja inputów poprzez JS
-
 ## SECURITY BINGO
 
 Przed oddaniem projektu muszą zostać spełnione wszystkie punkty security bingo.
