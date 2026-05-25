@@ -1,7 +1,9 @@
 <?php
 
-// Include config first so Database.php's bare require_once "config.php" is skipped via require_once dedup.
-require_once __DIR__ . '/../config.php';
+// EnvLoader::load() skips missing files, so tests run fine even without a real .env.
+require_once __DIR__ . '/../EnvLoader.php';
+EnvLoader::load(__DIR__ . '/../.env');
+
 require_once __DIR__ . '/../Database.php';
 require_once __DIR__ . '/../src/models/GalleryItem.php';
 require_once __DIR__ . '/../src/models/User.php';

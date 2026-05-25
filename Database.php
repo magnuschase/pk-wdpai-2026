@@ -1,6 +1,7 @@
 <?php
-// TODO: load .env instead of config.php
-require_once "config.php";
+
+require_once __DIR__ . '/EnvLoader.php';
+EnvLoader::load(__DIR__ . '/.env');
 
 class Database
 {
@@ -10,13 +11,15 @@ class Database
 	private string $password;
 	private string $host;
 	private string $database;
+	private int $port;
 
 	private function __construct()
 	{
-		$this->username = USERNAME;
-		$this->password = PASSWORD;
-		$this->host = HOST;
-		$this->database = DATABASE;
+		$this->username = $_ENV['DB_USERNAME'] ?? '';
+		$this->password = $_ENV['DB_PASSWORD'] ?? '';
+		$this->host = $_ENV['DB_HOST'] ?? 'db';
+		$this->database = $_ENV['DB_DATABASE'] ?? 'db';
+		$this->port = (int) ($_ENV['DB_PORT'] ?? 5432);
 	}
 
 	public static function getInstance(): Database
@@ -36,7 +39,7 @@ class Database
 
 		try {
 			$this->conn = new PDO(
-				"pgsql:host=$this->host;port=5432;dbname=$this->database",
+				"pgsql:host=$this->host;port=$this->port;dbname=$this->database",
 				$this->username,
 				$this->password,
 				["sslmode" => "prefer"]
