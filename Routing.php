@@ -6,6 +6,7 @@ require_once 'src/controllers/OrderController.php';
 require_once 'src/controllers/AdminOrderController.php';
 require_once 'src/controllers/AdminUserController.php';
 require_once 'src/controllers/AdminProductController.php';
+require_once 'src/controllers/UserController.php';
 
 class Routing
 {
@@ -16,6 +17,7 @@ class Routing
         'register'            => ['SecurityController',    'register'],
         'logout'              => ['SecurityController',    'logout'],
         'gallery'             => ['GalleryController',     'index'],
+        'dashboard'           => ['UserController',        'dashboard'],
         'gallery/favourite'   => ['GalleryController',     'toggleFavourite'],
         'order'               => ['OrderController',       'wizard'],
         'admin/orders'        => ['AdminOrderController',  'index'],

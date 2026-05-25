@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <?php include __DIR__ . '/../partials/head.html'; ?>
+    <link rel="stylesheet" href="/public/styles/dashboard.css" />
+    <title>My Orders — Terra &amp; Craft</title>
+  </head>
+  <body>
+    <?php include __DIR__ . '/../partials/nav.html'; ?>
+
+    <main class="dashboard">
+
+      <!-- ===== Header ===== -->
+      <div class="dashboard__header">
+        <div class="dashboard__avatar">
+          <?php
+            $parts    = preg_split('/[\s_\-]+/', $_SESSION['user_name'] ?? '');
+            $initials = implode('', array_map(fn($p) => mb_strtoupper(mb_substr($p, 0, 1)), array_slice($parts, 0, 2)));
+            echo $initials ?: '?';
+          ?>
+        </div>
+        <div>
+          <h1 class="dashboard__title"><?= htmlspecialchars($_SESSION['user_email'] ?? 'My Account') ?></h1>
+          <p class="dashboard__subtitle">Your order history and saved favourites.</p>
+        </div>
+      </div>
+
+      <!-- ===== Order History ===== -->
+      <section>
+        <h2 class="dashboard__section-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+          </svg>
+          Order History
+        </h2>
+
+        <?php if (empty($orders)): ?>
+        <div class="dashboard__empty">
+          <p>You haven&rsquo;t placed any orders yet.</p>
+          <a class="btn btn--primary" href="/order">Start a Custom Order</a>
+        </div>
+        <?php else: ?>
+        <div class="order-cards">
+          <?php foreach ($orders as $order):
+            $objectType = $order->getObjectTypeId() ? ($objectTypes[$order->getObjectTypeId()] ?? null) : null;
+            $glaze      = $order->getGlazeId()      ? ($glazes[$order->getGlazeId()]           ?? null) : null;
+            $orderNotes = $notes[$order->getId()] ?? [];
+          ?>
+          <div class="order-card">
+            <div class="order-card__main">
+              <span class="order-card__id">#<?= $order->getId() ?></span>
+
+              <span class="order-card__type">
+                <?= htmlspecialchars($objectType?->getName() ?? 'Custom Order') ?>
+                <?php if ($order->getSizeType()): ?>
+                  <span style="font-weight:400; color:var(--text-muted)">
+                    · <?= ucfirst(htmlspecialchars($order->getSizeType())) ?>
+                    <?php if ($order->getCustomDimensions()): ?>
+                      (<?= htmlspecialchars($order->getCustomDimensions()) ?>)
+                    <?php endif; ?>
+                  </span>
+                <?php endif; ?>
+              </span>
+
+              <div class="order-card__meta">
+                <?php if ($glaze): ?>
+                <span>
+                  <span
+                    class="order-card__glaze-dot"
+                    style="background:<?= htmlspecialchars($glaze->getColorHex() ?? '#9a857a') ?>"
+                  ></span>
+                  <?= htmlspecialchars($glaze->getName()) ?>
+                </span>
+                <?php endif; ?>
+
+                <?php if ($order->getBudgetMin() || $order->getBudgetMax()): ?>
+                <span>
+                  Budget:
+                  <?php if ($order->getBudgetMin()): ?>$<?= number_format($order->getBudgetMin(), 0) ?><?php endif; ?>
+                  <?php if ($order->getBudgetMin() && $order->getBudgetMax()): ?>–<?php endif; ?>
+                  <?php if ($order->getBudgetMax()): ?>$<?= number_format($order->getBudgetMax(), 0) ?><?php endif; ?>
+                </span>
+                <?php endif; ?>
+              </div>
+
+              <?php if ($order->getSpecialRequests()): ?>
+              <p style="font-size:0.8125rem; color:var(--text-muted); margin:0.25rem 0 0; font-style:italic; line-height:1.5">
+                &ldquo;<?= htmlspecialchars(mb_strimwidth($order->getSpecialRequests(), 0, 160, '…')) ?>&rdquo;
+              </p>
+              <?php endif; ?>
+
+              <?php if (!empty($orderNotes)): ?>
+              <div class="order-card__notes">
+                <?php foreach ($orderNotes as $note): ?>
+                <div class="order-card__note">
+                  <?= htmlspecialchars($note->getContent()) ?>
+                </div>
+                <?php endforeach; ?>
+              </div>
+              <?php endif; ?>
+            </div>
+
+            <div class="order-card__side">
+              <span class="status-badge status-badge--<?= htmlspecialchars($order->getStatus()) ?>">
+                <?= ucfirst(str_replace('_', ' ', $order->getStatus())) ?>
+              </span>
+              <?php if ($order->getPriceAdjustment() !== null): ?>
+              <span class="order-card__price">$<?= number_format($order->getPriceAdjustment(), 2) ?></span>
+              <?php endif; ?>
+              <span class="order-card__date"><?= date('d M Y', strtotime($order->getCreatedAt())) ?></span>
+            </div>
+          </div>
+          <?php endforeach; ?>
+        </div>
+        <?php endif; ?>
+      </section>
+
+      <!-- ===== Favourites ===== -->
+      <section>
+        <h2 class="dashboard__section-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/>
+          </svg>
+          Saved Favourites
+        </h2>
+
+        <?php if (empty($favourites)): ?>
+        <div class="dashboard__empty">
+          <p>You haven&rsquo;t saved any favourites yet.</p>
+          <a class="btn btn--primary" href="/gallery">Browse the Gallery</a>
+        </div>
+        <?php else: ?>
+        <div class="fav-grid">
+          <?php foreach ($favourites as $item): ?>
+          <a class="fav-card" href="/gallery" style="text-decoration:none">
+            <div class="fav-card__img-wrap">
+              <?php if ($item->getImageUrl()): ?>
+              <img
+                src="<?= htmlspecialchars($item->getImageUrl()) ?>"
+                alt="<?= htmlspecialchars($item->getName()) ?>"
+                loading="lazy"
+              />
+              <?php else: ?>
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M5 8.5c0-.828.672-1.5 1.5-1.5s1.5.672 1.5 1.5c0 .829-.672 1.5-1.5 1.5s-1.5-.671-1.5-1.5zm9 .5l-2.519 4-2.481-1.96-4 5.96h14l-5-8zm8-4v14h-20v-14h20zm2-2h-24v18h24v-18z"/>
+              </svg>
+              <?php endif; ?>
+            </div>
+            <div class="fav-card__body">
+              <p class="fav-card__name"><?= htmlspecialchars($item->getName()) ?></p>
+              <?php if ($item->getMaterial()): ?>
+              <p class="fav-card__meta"><?= htmlspecialchars($item->getMaterial()) ?></p>
+              <?php endif; ?>
+              <p class="fav-card__price">$<?= number_format($item->getPrice(), 2) ?></p>
+            </div>
+          </a>
+          <?php endforeach; ?>
+        </div>
+        <?php endif; ?>
+      </section>
+
+    </main>
+  </body>
+</html>
