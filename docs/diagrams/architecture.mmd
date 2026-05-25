@@ -1,0 +1,39 @@
+flowchart TB
+    subgraph CLIENT["Browser — Client Layer"]
+        direction LR
+        HTML["HTML Templates<br/>(.html + PHP includes)"]
+        CSS["CSS<br/>(styles/)"]
+        JS["JavaScript<br/>(scripts/)"]
+    end
+
+    subgraph DOCKER["Docker Compose"]
+        subgraph NGINX["nginx container"]
+            NG["Nginx<br/>· Serves static assets<br/>· Routes .php → PHP-FPM<br/>· Error pages: 400/403/404/413/500"]
+        end
+
+        subgraph PHP["php container — Application Layer (MVC)"]
+            direction TB
+            ENTRY["index.php<br/>· session_set_cookie_params<br/>· session_start"]
+            ROUTER["Routing.php<br/>· Exact-match routes<br/>· Regex param routes"]
+            CTRL["Controllers<br/>Security · Gallery · Order<br/>AdminOrder · AdminUser<br/>AdminProduct · User"]
+            REPO["Repositories<br/>Users · GalleryItems · Orders<br/>OrderNotes · ObjectTypes<br/>Glazes · Categories · UserProfiles"]
+            MODEL["Models<br/>User · GalleryItem · Order<br/>OrderImage · OrderNote<br/>ObjectType · Glaze · Category"]
+            ENTRY --> ROUTER --> CTRL --> REPO --> MODEL
+        end
+
+        subgraph DB["db container — Data Layer"]
+            PG["PostgreSQL<br/>· 10 tables<br/>· Views: v_order_details, v_user_stats<br/>· Trigger: trg_orders_updated_at<br/>· Function: get_user_order_count"]
+        end
+    end
+
+    subgraph INFRA["Supporting infrastructure"]
+        ENV[".env<br/>DB credentials"]
+        LOADER["EnvLoader.php"]
+        PGADMIN["pgAdmin 4<br/>(port 5050)"]
+    end
+
+    CLIENT  -- "HTTP (port 8080)"          --> NGINX
+    NGINX   -- "FastCGI / PHP-FPM :9000"   --> PHP
+    PHP     -- "PDO / pgsql :5432"          --> DB
+    PGADMIN -- "pgsql"                      --> DB
+    ENV     --> LOADER --> PHP
