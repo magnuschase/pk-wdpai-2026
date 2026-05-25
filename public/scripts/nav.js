@@ -39,7 +39,7 @@ if (userDropdownToggle && userDropdown) {
 }
 
 window.addEventListener("resize", () => {
-  if (window.innerWidth > 930) {
+  if (AppBreakpoints.isDesktop()) {
     sidebar.classList.add("hidden");
     navbar.classList.remove("hidden");
   }

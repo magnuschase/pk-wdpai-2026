@@ -8,7 +8,7 @@
   gap: 0.5rem;
 }
 
-@media (min-width: 930px) {
+@media (min-width: 931px) {
   .two-col-wrapper {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -25,7 +25,7 @@
   }
 }
 
-@media (min-width: 930px) {
+@media (min-width: 931px) {
   .center-content {
     min-height: 80vh;
     display: flex;

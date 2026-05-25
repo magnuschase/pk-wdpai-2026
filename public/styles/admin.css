@@ -160,7 +160,7 @@
   display: none;
 }
 
-@media (min-width: 769px) {
+@media (min-width: 931px) {
   .admin-sidebar.hidden {
     visibility: visible;
     opacity: 1;
@@ -197,7 +197,7 @@
   display: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 930px) {
   .admin-shell {
     display: flex;
     flex-direction: column;

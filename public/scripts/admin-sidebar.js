@@ -1,5 +1,3 @@
-const MOBILE_BREAKPOINT = 768;
-
 // Highlight active nav item based on current URL
 document.querySelectorAll(".admin-nav__item").forEach((link) => {
   if (window.location.pathname.startsWith(link.getAttribute("href"))) {
@@ -11,10 +9,8 @@ const navOpenBtn = document.querySelector("#adminNavOpenBtn");
 const sidebar = document.getElementById("adminSidebar");
 const navbar = document.getElementById("adminNavbar");
 
-const isMobile = () => window.innerWidth < MOBILE_BREAKPOINT;
-
 const syncAdminNavLayout = () => {
-  if (isMobile()) {
+  if (AppBreakpoints.isMobile()) {
     sidebar.classList.add("hidden");
     navbar.classList.remove("hidden");
   } else {
@@ -25,13 +21,13 @@ const syncAdminNavLayout = () => {
 
 if (navOpenBtn && sidebar && navbar) {
   navOpenBtn.addEventListener("click", () => {
-    if (!isMobile()) return;
+    if (!AppBreakpoints.isMobile()) return;
     sidebar.classList.toggle("hidden");
   });
 
   window.addEventListener("click", (event) => {
     if (
-      !isMobile() ||
+      !AppBreakpoints.isMobile() ||
       sidebar.classList.contains("hidden") ||
       sidebar.contains(event.target) ||
       navOpenBtn.contains(event.target)
