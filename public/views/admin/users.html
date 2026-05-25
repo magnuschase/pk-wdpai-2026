@@ -109,24 +109,62 @@
         <!-- Stats cards -->
         <div class="stats-grid">
           <div class="stat-card">
-            <!-- TODO: Swap to svg icon -->
-            <div class="stat-card__icon stat-card__icon--primary">👤</div>
+            <div class="stat-card__icon stat-card__icon--primary">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path
+                  d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm0 22c-3.123 0-5.914-1.441-7.749-3.69.259-.588.783-.995 1.867-1.246 2.244-.518 4.459-.981 3.393-2.945-3.155-5.82-.899-9.119 2.489-9.119 3.322 0 5.634 3.177 2.489 9.119-1.035 1.952 1.1 2.416 3.393 2.945 1.082.25 1.61.655 1.871 1.241-1.836 2.253-4.628 3.695-7.753 3.695z"
+                />
+              </svg>
+            </div>
             <div>
               <p class="stat-card__label">Total Users</p>
               <p class="stat-card__value"><?= $totalUsers ?></p>
             </div>
           </div>
           <div class="stat-card">
-            <!-- TODO: Swap to svg icon -->
-            <div class="stat-card__icon stat-card__icon--green">✓</div>
+            <div class="stat-card__icon stat-card__icon--green">
+              <svg
+                clip-rule="evenodd"
+                fill-rule="evenodd"
+                stroke-linejoin="round"
+                stroke-miterlimit="2"
+                height="24"
+                width="24"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+              >
+                <path
+                  d="m11.998 2.005c5.517 0 9.997 4.48 9.997 9.997 0 5.518-4.48 9.998-9.997 9.998-5.518 0-9.998-4.48-9.998-9.998 0-5.517 4.48-9.997 9.998-9.997zm-5.049 10.386 3.851 3.43c.142.128.321.19.499.19.202 0 .405-.081.552-.242l5.953-6.509c.131-.143.196-.323.196-.502 0-.41-.331-.747-.748-.747-.204 0-.405.082-.554.243l-5.453 5.962-3.298-2.938c-.144-.127-.321-.19-.499-.19-.415 0-.748.335-.748.746 0 .205.084.409.249.557z"
+                  fill-rule="nonzero"
+                />
+              </svg>
+            </div>
             <div>
               <p class="stat-card__label">Active</p>
               <p class="stat-card__value"><?= $activeUsers ?></p>
             </div>
           </div>
           <div class="stat-card">
-            <!-- TODO: Swap to svg icon -->
-            <div class="stat-card__icon stat-card__icon--amber">★</div>
+            <div class="stat-card__icon stat-card__icon--amber">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path
+                  d="M16.625 8.292c0 .506-.41.917-.917.917s-.916-.411-.916-.917.409-.917.916-.917.917.411.917.917zm7.375 3.708c0 6.627-5.373 12-12 12s-12-5.373-12-12 5.373-12 12-12 12 5.373 12 12zm-11.293 1.946c-1.142-.436-2.065-1.312-2.561-2.423l-3.146 3.185v2.292h3v-1h1v-1h.672l1.035-1.054zm5.293-4.279c0-2.025-1.642-3.667-3.667-3.667-2.024 0-3.666 1.642-3.666 3.667s1.642 3.667 3.666 3.667c2.025-.001 3.667-1.643 3.667-3.667z"
+                />
+              </svg>
+            </div>
             <div>
               <p class="stat-card__label">Admins</p>
               <p class="stat-card__value"><?= $adminUsers ?></p>
@@ -138,7 +176,19 @@
         <div class="table-panel">
           <div class="table-panel__toolbar">
             <div class="table-search">
-              <span class="table-search__icon">🔍</span>
+              <span class="table-search__icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M23.832 19.641l-6.821-6.821c2.834-5.878-1.45-12.82-8.065-12.82-4.932 0-8.946 4.014-8.946 8.947 0 6.508 6.739 10.798 12.601 8.166l6.879 6.879c1.957.164 4.52-2.326 4.352-4.351zm-14.886-4.721c-3.293 0-5.973-2.68-5.973-5.973s2.68-5.973 5.973-5.973c3.294 0 5.974 2.68 5.974 5.973s-2.68 5.973-5.974 5.973z"
+                  />
+                </svg>
+              </span>
               <input
                 type="text"
                 id="user-search"
@@ -153,7 +203,18 @@
                 <option value="user">User</option>
               </select>
               <button class="btn btn--primary btn--sm" id="btn-open-create">
-                + Add User
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M19.5 15c-2.483 0-4.5 2.015-4.5 4.5s2.017 4.5 4.5 4.5 4.5-2.015 4.5-4.5-2.017-4.5-4.5-4.5zm2.5 5h-2v2h-1v-2h-2v-1h2v-2h1v2h2v1zm-7.18 4h-14.815l-.005-1.241c0-2.52.199-3.975 3.178-4.663 3.365-.777 6.688-1.473 5.09-4.418-4.733-8.729-1.35-13.678 3.732-13.678 6.751 0 7.506 7.595 3.64 13.679-1.292 2.031-2.64 3.63-2.64 5.821 0 1.747.696 3.331 1.82 4.5z"
+                  />
+                </svg>
+                Add User
               </button>
             </div>
           </div>
@@ -225,7 +286,22 @@
                         data-is-admin="<?= $user->isAdmin() ? '1' : '0' ?>"
                         data-is-active="<?= $user->isActive() ? '1' : '0' ?>"
                       >
-                        ✏️
+                        <svg
+                          clip-rule="evenodd"
+                          fill-rule="evenodd"
+                          stroke-linejoin="round"
+                          stroke-miterlimit="2"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          height="24"
+                          width="24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="m4.481 15.659c-1.334 3.916-1.48 4.232-1.48 4.587 0 .528.46.749.749.749.352 0 .668-.137 4.574-1.492zm1.06-1.061 3.846 3.846 11.321-11.311c.195-.195.293-.45.293-.707 0-.255-.098-.51-.293-.706-.692-.691-1.742-1.74-2.435-2.432-.195-.195-.451-.293-.707-.293-.254 0-.51.098-.706.293z"
+                            fill-rule="nonzero"
+                          />
+                        </svg>
                       </button>
 
                       <?php if ($user->getId() !== (int) $_SESSION['user_id']):
@@ -238,7 +314,22 @@
                         data-id="<?= $user->getId() ?>"
                         data-username="<?= htmlspecialchars($user->getUsername()) ?>"
                       >
-                        🗑️
+                        <svg
+                          clip-rule="evenodd"
+                          fill-rule="evenodd"
+                          stroke-linejoin="round"
+                          stroke-miterlimit="2"
+                          viewBox="0 0 24 24"
+                          height="24"
+                          width="24"
+                          fill="currentColor"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="m20.015 6.506h-16v14.423c0 .591.448 1.071 1 1.071h14c.552 0 1-.48 1-1.071 0-3.905 0-14.423 0-14.423zm-5.75 2.494c.414 0 .75.336.75.75v8.5c0 .414-.336.75-.75.75s-.75-.336-.75-.75v-8.5c0-.414.336-.75.75-.75zm-4.5 0c.414 0 .75.336.75.75v8.5c0 .414-.336.75-.75.75s-.75-.336-.75-.75v-8.5c0-.414.336-.75.75-.75zm-.75-5v-1c0-.535.474-1 1-1h4c.526 0 1 .465 1 1v1h5.254c.412 0 .746.335.746.747s-.334.747-.746.747h-16.507c-.413 0-.747-.335-.747-.747s.334-.747.747-.747zm4.5 0v-.5h-3v.5z"
+                            fill-rule="nonzero"
+                          />
+                        </svg>
                       </button>
                       <?php endif; ?>
                     </div>

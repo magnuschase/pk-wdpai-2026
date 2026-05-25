@@ -63,19 +63,19 @@
                    required />
             <label class="object-option__label" for="obj_<?= $type->getId() ?>">
               <span class="object-option__icon">
-								<!-- TODO: Swap to SVG icons -->
                 <?php
                   // Map common object type names to simple Unicode symbols
                   $icons = [
-                    'mug'       => '☕',
-                    'plate'     => '🍽',
-                    'bowl'      => '🥣',
-                    'vase'      => '🏺',
-                    'planter'   => '🪴',
-                    'sculpture' => '🗿',
+                    'mug'       => 'mug.html',
+                    'plate'     => 'plate.html',
+                    'bowl'      => 'bowl.html',
+                    'vase'      => 'vase.html',
+                    'planter'   => 'planter.html',
+                    'sculpture' => 'sculpture.html',
                   ];
                   $key = strtolower(trim($type->getName()));
-                  echo isset($icons[$key]) ? $icons[$key] : '🎨';
+									$iconPath = isset($icons[$key]) ? $icons[$key] : 'other.html';
+                  include __DIR__ . '/partials/icons/categories/' . $iconPath;
                 ?>
               </span>
               <span class="object-option__name"><?= htmlspecialchars($type->getName()) ?></span>
