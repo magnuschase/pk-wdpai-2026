@@ -1,0 +1,96 @@
+erDiagram
+    users {
+        serial      id          PK
+        varchar50   username
+        varchar255  email
+        text        password
+        boolean     is_active
+        boolean     is_admin
+        timestamptz created_at
+        timestamptz updated_at
+    }
+
+    user_profiles {
+        integer     user_id     PK,FK
+        varchar500  avatar_url
+        text        bio
+        varchar30   phone
+    }
+
+    categories {
+        serial      id          PK
+        varchar100  name
+        varchar100  slug
+    }
+
+    gallery_items {
+        serial      id          PK
+        integer     category_id FK
+        varchar200  name
+        varchar100  material
+        numeric     price
+        varchar500  image_url
+        text        description
+        timestamptz created_at
+    }
+
+    object_types {
+        serial      id          PK
+        varchar50   name
+        varchar100  icon
+    }
+
+    glazes {
+        serial      id          PK
+        varchar100  name
+        varchar7    color_hex
+    }
+
+    orders {
+        serial      id                PK
+        integer     user_id           FK
+        integer     object_type_id    FK
+        integer     glaze_id          FK
+        varchar20   size_type
+        varchar200  custom_dimensions
+        text        special_requests
+        numeric     budget_min
+        numeric     budget_max
+        varchar30   status
+        numeric     price_adjustment
+        timestamptz created_at
+        timestamptz updated_at
+    }
+
+    order_images {
+        serial      id          PK
+        integer     order_id    FK
+        varchar500  image_url
+        timestamptz uploaded_at
+    }
+
+    order_notes {
+        serial      id          PK
+        integer     order_id    FK
+        integer     author_id   FK
+        varchar20   note_type
+        text        content
+        timestamptz created_at
+    }
+
+    user_favorites {
+        integer     user_id     PK,FK
+        integer     item_id     PK,FK
+        timestamptz created_at
+    }
+
+    users           ||--||  user_profiles   : "has profile"
+    users           ||--o{  orders          : "places"
+    users           ||--o{  order_notes     : "authors"
+    users           ||--o{  user_favorites  : "saves"
+    categories      ||--o{  gallery_items   : "groups"
+    object_types    ||--o{  orders          : "typed as"
+    glazes          ||--o{  orders          : "finished with"
+    orders          ||--o{  order_images    : "has"
+    orders          ||--o{  order_notes     : "has"
+    gallery_items   ||--o{  user_favorites  : "saved in"
