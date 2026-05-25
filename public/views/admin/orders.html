@@ -198,7 +198,7 @@
                       white-space: nowrap;
                     "
                   >
-                    <?= date('d M Y', strtotime($order->getCreatedAt())) ?>
+                    <time data-local datetime="<?= htmlspecialchars($order->getCreatedAt()) ?>"><?= date('d M Y', strtotime($order->getCreatedAt())) ?></time>
                   </td>
 
                   <td>

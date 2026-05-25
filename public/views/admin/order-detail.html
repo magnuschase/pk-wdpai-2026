@@ -21,8 +21,8 @@
       <div class="page-header" >
         <h1>Order #<?= $order->getId() ?></h1>
         <p>
-          Placed <?= date('d M Y, H:i', strtotime($order->getCreatedAt())) ?>
-          &middot; Last updated <?= date('d M Y, H:i', strtotime($order->getUpdatedAt())) ?>
+          Placed <time data-local data-time datetime="<?= htmlspecialchars($order->getCreatedAt()) ?>"><?= date('d M Y, H:i', strtotime($order->getCreatedAt())) ?></time>
+          &middot; Last updated <time data-local data-time datetime="<?= htmlspecialchars($order->getUpdatedAt()) ?>"><?= date('d M Y, H:i', strtotime($order->getUpdatedAt())) ?></time>
         </p>
       </div>
       <span class="order-details__title-status order-status order-status--<?= htmlspecialchars($order->getStatus()) ?>">
@@ -202,7 +202,7 @@
             <div class="note note--<?= htmlspecialchars($note->getNoteType()) ?>">
               <span class="note__meta">
                 <?= $note->isInternal() ? '🔒 Internal' : '💬 Customer' ?>
-                &middot; <?= date('d M Y, H:i', strtotime($note->getCreatedAt())) ?>
+                &middot; <time data-local data-time datetime="<?= htmlspecialchars($note->getCreatedAt()) ?>"><?= date('d M Y, H:i', strtotime($note->getCreatedAt())) ?></time>
               </span>
               <p style="color:var(--text);font-size:0.875rem;margin:0;">
                 <?= nl2br(htmlspecialchars($note->getContent())) ?>

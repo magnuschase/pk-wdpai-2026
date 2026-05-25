@@ -125,8 +125,9 @@
                 >$<?= number_format($order->getPriceAdjustment(), 2) ?></span
               >
               <?php endif; ?>
-              <span class="order-card__date"
-                ><?= date('d M Y', strtotime($order->getCreatedAt())) ?></span
+              <time class="order-card__date" data-local
+                datetime="<?= htmlspecialchars($order->getCreatedAt()) ?>"
+                ><?= date('d M Y', strtotime($order->getCreatedAt())) ?></time
               >
             </div>
           </div>

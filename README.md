@@ -494,6 +494,7 @@ SELECT get_user_order_count(2);
 
 - [x] Custom Order Wizard (wieloetapowy formularz z Fetch API)
 - [x] Interaktywne modale
+- [x] Formatowanie dat pod locale użytkownika
 - [x] Upload zdjęć (zamówienia i produkty galerii)
 - [x] Panel klienta: historia zamówień i ulubione
 - [x] System notatek do zamówień (wewnętrzne i do klienta)
