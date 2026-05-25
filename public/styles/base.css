@@ -329,3 +329,15 @@ input[type="number"] {
     display: none !important;
   }
 }
+
+/* Checkbox styles */
+
+input[type="checkbox"] {
+  accent-color: var(--primary);
+  height: 1rem;
+  width: 1rem;
+}
+
+label {
+  user-select: none;
+}
