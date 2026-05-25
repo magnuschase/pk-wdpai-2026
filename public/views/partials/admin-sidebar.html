@@ -1,0 +1,76 @@
+<!-- TODO: Cleanup styles, add Products page where admin can manage existing products & add new ones -->
+<nav class="adminNav" id="adminNavbar">
+  <div class="adminNav__logo">
+    <?php include __DIR__ . '/icons/cog.html'; ?>
+    <h1>TERRA & CRAFT</h1>
+  </div>
+
+  <div class="mobile-only">
+    <div id="adminNavOpenBtn">
+      <svg
+        clip-rule="evenodd"
+        fill-rule="evenodd"
+        stroke-linejoin="round"
+        stroke-miterlimit="2"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="currentColor"
+      >
+        <path
+          d="m12.002 2c5.518 0 9.998 4.48 9.998 9.998 0 5.517-4.48 9.997-9.998 9.997-5.517 0-9.997-4.48-9.997-9.997 0-5.518 4.48-9.998 9.997-9.998zm2.498 9.995c0-.69.56-1.25 1.25-1.25s1.25.56 1.25 1.25-.56 1.25-1.25 1.25-1.25-.56-1.25-1.25zm-3.75 0c0-.69.56-1.25 1.25-1.25s1.25.56 1.25 1.25-.56 1.25-1.25 1.25-1.25-.56-1.25-1.25zm-3.75 0c0-.69.56-1.25 1.25-1.25s1.25.56 1.25 1.25-.56 1.25-1.25 1.25-1.25-.56-1.25-1.25z"
+        />
+      </svg>
+    </div>
+  </div>
+</nav>
+
+<aside class="admin-sidebar hidden" id="adminSidebar">
+  <div>
+    <div class="admin-sidebar__brand">
+      <div class="admin-sidebar__icon">
+        <?php include __DIR__ . '/icons/cog.html'; ?>
+      </div>
+      <div>
+        <div class="admin-sidebar__brand-name">Terra &amp; Craft</div>
+        <div class="admin-sidebar__brand-sub">Admin Panel</div>
+      </div>
+    </div>
+
+    <nav class="admin-nav">
+      <a class="admin-nav__item" href="/admin/orders">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"
+          />
+        </svg>
+        Orders
+      </a>
+      <a class="admin-nav__item" href="/admin/users">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"
+          />
+        </svg>
+        Users
+      </a>
+      <hr class="admin-nav__divider" />
+      <a class="admin-nav__item" href="/gallery">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+        </svg>
+        Back to site
+      </a>
+    </nav>
+  </div>
+
+  <div class="admin-sidebar__user">
+    <div class="admin-sidebar__avatar">
+      <?= strtoupper(mb_substr($_SESSION['username'] ?? 'A', 0, 1)) ?>
+    </div>
+    <span class="admin-sidebar__username">
+      <?= htmlspecialchars($_SESSION['username'] ?? 'Admin') ?>
+    </span>
+  </div>
+</aside>
+
+<script src="/public/scripts/admin-sidebar.js"></script>
