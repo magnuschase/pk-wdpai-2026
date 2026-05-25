@@ -382,9 +382,9 @@ Sprawdzane scenariusze (10 przypadków):
 1. Przejdź do `/admin/orders`
 2. Kliknij wybrane zamówienie aby zobaczyć szczegóły
 3. Zmień status na `approved` i zapisz
-4. Dodaj notatkę wewnętrzną (zakładka _Internal_)
-5. Wyślij wiadomość do klienta (zakładka _Customer_)
-6. Sprawdź, że `updated_at` zostało zaktualizowane — wyzwalacz `trg_orders_updated_at` zadziałał
+4. Sprawdź, że `updated_at` zostało zaktualizowane — wyzwalacz `trg_orders_updated_at` zadziałał
+5. Dodaj notatkę wewnętrzną (zakładka _Internal_)
+6. Wyślij wiadomość do klienta (zakładka _Customer_)
 
 ### 5. Zarządzanie produktami (admin)
 

@@ -72,11 +72,7 @@
                   <span
                     class="order-card__glaze-dot"
                     style="
-                      background: <?=
-                        htmlspecialchars(
-                          $glaze->getColorHex() ?? &quot;#9a857a&quot;
-                        )
-                        ?>;
+                      background: <?= htmlspecialchars($glaze->getColorHex() ?? '#9a857a') ?>;
                     "
                   ></span>
                   <?= htmlspecialchars($glaze->getName()) ?>
