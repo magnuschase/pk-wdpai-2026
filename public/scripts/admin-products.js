@@ -2,9 +2,9 @@
 // Creates self-contained drag-and-drop + preview behaviour for a single-file input.
 // currentUrl: if set, shows the existing image as the initial preview.
 function makeFileDrop(dropZoneId, fileInputId, previewsId, currentUrl) {
-  const dropZone  = document.getElementById(dropZoneId);
+  const dropZone = document.getElementById(dropZoneId);
   const fileInput = document.getElementById(fileInputId);
-  const previews  = document.getElementById(previewsId);
+  const previews = document.getElementById(previewsId);
   if (!dropZone || !fileInput || !previews) return;
 
   const ALLOWED = ["image/jpeg", "image/png", "image/webp"];
@@ -20,7 +20,9 @@ function makeFileDrop(dropZoneId, fileInputId, previewsId, currentUrl) {
     const img = document.createElement("img");
     img.src = URL.createObjectURL(selectedFile);
     img.alt = selectedFile.name;
-    img.onload = function () { URL.revokeObjectURL(img.src); };
+    img.onload = function () {
+      URL.revokeObjectURL(img.src);
+    };
     wrap.appendChild(img);
 
     const btn = document.createElement("button");
@@ -110,28 +112,28 @@ function makeFileDrop(dropZoneId, fileInputId, previewsId, currentUrl) {
 const createDrop = makeFileDrop(
   "create-file-drop-zone",
   "create-image-upload",
-  "create-file-previews"
+  "create-file-previews",
 );
 const editDrop = makeFileDrop(
   "edit-file-drop-zone",
   "edit-image-upload",
-  "edit-file-previews"
+  "edit-file-previews",
 );
 
 // ---- Live search & category filter ----
-const searchInput    = document.getElementById("product-search");
+const searchInput = document.getElementById("product-search");
 const categoryFilter = document.getElementById("category-filter");
-const tbody          = document.getElementById("products-tbody");
-const countEl        = document.getElementById("visible-count");
+const tbody = document.getElementById("products-tbody");
+const countEl = document.getElementById("visible-count");
 
 const filterTable = () => {
-  const q     = searchInput.value.toLowerCase();
+  const q = searchInput.value.toLowerCase();
   const catId = categoryFilter.value;
   let visible = 0;
 
   tbody.querySelectorAll("tr[data-name]").forEach(function (row) {
-    const name      = row.dataset.name || "";
-    const rowCatId  = row.dataset.categoryId || "";
+    const name = row.dataset.name || "";
+    const rowCatId = row.dataset.categoryId || "";
 
     const show = (!q || name.includes(q)) && (!catId || rowCatId === catId);
     row.style.display = show ? "" : "none";
@@ -146,15 +148,16 @@ categoryFilter.addEventListener("change", filterTable);
 
 // ---- Edit modal ----
 const editModal = document.getElementById("edit-modal");
-const editForm  = document.getElementById("edit-form");
+const editForm = document.getElementById("edit-form");
 
 document.querySelectorAll(".js-edit-btn").forEach(function (btn) {
   btn.addEventListener("click", function () {
-    document.getElementById("edit-name").value        = btn.dataset.name;
-    document.getElementById("edit-price").value       = btn.dataset.price;
-    document.getElementById("edit-material").value    = btn.dataset.material;
+    document.getElementById("edit-name").value = btn.dataset.name;
+    document.getElementById("edit-price").value = btn.dataset.price;
+    document.getElementById("edit-material").value = btn.dataset.material;
     document.getElementById("edit-description").value = btn.dataset.description;
-    document.getElementById("edit-category").value    = btn.dataset.categoryId || "";
+    document.getElementById("edit-category").value =
+      btn.dataset.categoryId || "";
 
     editDrop.reset(btn.dataset.imageUrl || "");
     editForm.action = "/admin/products/" + btn.dataset.id + "/update";
@@ -174,8 +177,8 @@ editModal.addEventListener("click", function (e) {
 });
 
 // ---- Delete modal ----
-const deleteModal       = document.getElementById("delete-modal");
-const deleteForm        = document.getElementById("delete-form");
+const deleteModal = document.getElementById("delete-modal");
+const deleteForm = document.getElementById("delete-form");
 const deleteProductName = document.getElementById("delete-product-name");
 
 document.querySelectorAll(".js-delete-btn").forEach(function (btn) {
@@ -196,9 +199,11 @@ deleteModal.addEventListener("click", function (e) {
 // ---- Create modal ----
 const createModal = document.getElementById("create-modal");
 
-document.getElementById("btn-open-create").addEventListener("click", function () {
-  createModal.style.display = "flex";
-});
+document
+  .getElementById("btn-open-create")
+  .addEventListener("click", function () {
+    createModal.style.display = "flex";
+  });
 document.getElementById("create-cancel").addEventListener("click", function () {
   createModal.style.display = "none";
   createDrop.reset("");
