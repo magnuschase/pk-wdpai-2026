@@ -45,8 +45,9 @@ class Database
 			$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			return $this->conn;
 		} catch (PDOException $e) {
-			// TODO: change to error page e.g. 404 not found etc.
-			die("Connection failed: " . $e->getMessage());
+			http_response_code(500);
+			include 'public/views/500.html';
+			exit();
 		}
 	}
 
