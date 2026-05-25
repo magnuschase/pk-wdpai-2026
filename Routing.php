@@ -5,6 +5,7 @@ require_once 'src/controllers/GalleryController.php';
 require_once 'src/controllers/OrderController.php';
 require_once 'src/controllers/AdminOrderController.php';
 require_once 'src/controllers/AdminUserController.php';
+require_once 'src/controllers/AdminProductController.php';
 
 class Routing
 {
@@ -20,6 +21,8 @@ class Routing
         'admin/orders'        => ['AdminOrderController',  'index'],
         'admin/users'         => ['AdminUserController',   'index'],
         'admin/users/create'  => ['AdminUserController',   'create'],
+        'admin/products'      => ['AdminProductController', 'index'],
+        'admin/products/create' => ['AdminProductController', 'create'],
     ];
 
     // Regex path → [controller, action]  — first capture group becomes $id
@@ -28,7 +31,9 @@ class Routing
         '#^admin/orders/(\d+)/status$#' => ['AdminOrderController', 'updateStatus'],
         '#^admin/orders/(\d+)/note$#'   => ['AdminOrderController', 'addNote'],
         '#^admin/users/(\d+)/update$#'  => ['AdminUserController',  'update'],
-        '#^admin/users/(\d+)/delete$#'  => ['AdminUserController',  'delete'],
+        '#^admin/users/(\d+)/delete$#'    => ['AdminUserController',  'delete'],
+        '#^admin/products/(\d+)/update$#' => ['AdminProductController', 'update'],
+        '#^admin/products/(\d+)/delete$#' => ['AdminProductController', 'delete'],
     ];
 
     public static function run(string $path): void

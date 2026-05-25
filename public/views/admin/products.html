@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <?php include __DIR__ . '/../partials/head.html'; ?>
+    <link rel="stylesheet" href="/public/styles/admin.css" />
+    <link rel="stylesheet" href="/public/styles/order-wizard.css" />
+    <title>Products — Admin — Terra &amp; Craft</title>
+  </head>
+  <body>
+    <div class="admin-shell">
+      <!-- ===== Sidebar ===== -->
+      <?php include __DIR__ . '/../partials/admin-sidebar.html'; ?>
+
+      <!-- ===== Main ===== -->
+      <main class="admin-main">
+        <div class="page-header">
+          <h1>Products</h1>
+          <p>Manage gallery items — add, edit or remove products.</p>
+        </div>
+
+        <!-- Error banner -->
+        <?php if (!empty($_GET['error'])): ?>
+        <div class="alert alert--error">
+          <?php $msgs = [
+            'missing_fields' => 'Please fill in the product name and a valid price.',
+          ]; echo htmlspecialchars($msgs[$_GET['error']] ?? 'An unexpected error occurred.'); ?>
+        </div>
+        <?php endif; ?>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-card__icon stat-card__icon--primary">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h14v12z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="stat-card__label">Total Products</p>
+              <p class="stat-card__value"><?= count($products) ?></p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card__icon stat-card__icon--green">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="stat-card__label">Categories</p>
+              <p class="stat-card__value"><?= count($categories) ?></p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card__icon stat-card__icon--amber">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M4 9h4v11H4zm6-5h4v16h-4zm6 8h4v8h-4z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="stat-card__label">Avg. Price</p>
+              <p class="stat-card__value">
+                <?php
+                  $avg = count($products)
+                    ? array_sum(array_map(fn($p) => $p->getPrice(), $products)) / count($products)
+                    : 0;
+                  echo '$' . number_format($avg, 0);
+                ?>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Products table -->
+        <div class="table-panel">
+          <div class="table-panel__toolbar">
+            <div class="table-search">
+              <span class="table-search__icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M23.832 19.641l-6.821-6.821c2.834-5.878-1.45-12.82-8.065-12.82-4.932 0-8.946 4.014-8.946 8.947 0 6.508 6.739 10.798 12.601 8.166l6.879 6.879c1.957.164 4.52-2.326 4.352-4.351zm-14.886-4.721c-3.293 0-5.973-2.68-5.973-5.973s2.68-5.973 5.973-5.973c3.294 0 5.974 2.68 5.974 5.973s-2.68 5.974-5.974 5.973z"/>
+                </svg>
+              </span>
+              <input type="text" id="product-search" placeholder="Search products…" autocomplete="off" />
+            </div>
+            <div style="display:flex; gap:0.75rem; align-items:center">
+              <select class="table-select" id="category-filter">
+                <option value="">All categories</option>
+                <?php foreach ($categories as $cat): ?>
+                <option value="<?= $cat->getId() ?>"><?= htmlspecialchars($cat->getName()) ?></option>
+                <?php endforeach; ?>
+              </select>
+              <button class="btn btn--primary btn--sm" id="btn-open-create">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"/>
+                </svg>
+                Add Product
+              </button>
+            </div>
+          </div>
+
+          <div style="overflow-x:auto">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Image</th>
+                  <th>Name</th>
+                  <th>Category</th>
+                  <th>Material</th>
+                  <th>Price</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="products-tbody">
+                <?php if (empty($products)): ?>
+                <tr>
+                  <td colspan="6" style="text-align:center; color:var(--text-muted); padding:2rem">
+                    No products yet.
+                  </td>
+                </tr>
+                <?php endif; ?>
+                <?php
+                  $categoryMap = [];
+                  foreach ($categories as $cat) {
+                      $categoryMap[$cat->getId()] = $cat;
+                  }
+                ?>
+                <?php foreach ($products as $product):
+                  $cat = $product->getCategoryId() ? ($categoryMap[$product->getCategoryId()] ?? null) : null;
+                ?>
+                <tr
+                  data-name="<?= htmlspecialchars(strtolower($product->getName())) ?>"
+                  data-category-id="<?= $product->getCategoryId() ?? '' ?>"
+                >
+                  <td>
+                    <?php if ($product->getImageUrl()): ?>
+                    <img
+                      src="<?= htmlspecialchars($product->getImageUrl()) ?>"
+                      alt="<?= htmlspecialchars($product->getName()) ?>"
+                      style="width:3rem; height:3rem; object-fit:cover; border-radius:var(--radius-sm); display:block"
+                    />
+                    <?php else: ?>
+                    <div style="width:3rem; height:3rem; border-radius:var(--radius-sm); background:var(--border); display:flex; align-items:center; justify-content:center; color:var(--text-muted)">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M5 8.5c0-.828.672-1.5 1.5-1.5s1.5.672 1.5 1.5c0 .829-.672 1.5-1.5 1.5s-1.5-.671-1.5-1.5zm9 .5l-2.519 4-2.481-1.96-4 5.96h14l-5-8zm8-4v14h-20v-14h20zm2-2h-24v18h24v-18z"/>
+                      </svg>
+                    </div>
+                    <?php endif; ?>
+                  </td>
+                  <td>
+                    <span style="font-weight:500; color:var(--text)"><?= htmlspecialchars($product->getName()) ?></span>
+                    <?php if ($product->getDescription()): ?>
+                    <span style="display:block; font-size:0.75rem; color:var(--text-muted); margin-top:0.125rem; max-width:20rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap">
+                      <?= htmlspecialchars($product->getDescription()) ?>
+                    </span>
+                    <?php endif; ?>
+                  </td>
+                  <td style="color:var(--text-muted)">
+                    <?= htmlspecialchars($cat?->getName() ?? '—') ?>
+                  </td>
+                  <td style="color:var(--text-muted)">
+                    <?= htmlspecialchars($product->getMaterial() ?? '—') ?>
+                  </td>
+                  <td style="font-weight:600; color:var(--text)">
+                    $<?= number_format($product->getPrice(), 2) ?>
+                  </td>
+                  <td>
+                    <div style="display:flex; gap:0.5rem">
+                      <button
+                        type="button"
+                        class="btn btn--icon btn--sm js-edit-btn"
+                        title="Edit product"
+                        data-id="<?= $product->getId() ?>"
+                        data-name="<?= htmlspecialchars($product->getName()) ?>"
+                        data-price="<?= $product->getPrice() ?>"
+                        data-category-id="<?= $product->getCategoryId() ?? '' ?>"
+                        data-material="<?= htmlspecialchars($product->getMaterial() ?? '') ?>"
+                        data-description="<?= htmlspecialchars($product->getDescription() ?? '') ?>"
+                        data-image-url="<?= htmlspecialchars($product->getImageUrl() ?? '') ?>"
+                      >
+                        <svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" fill="currentColor" height="24" width="24" xmlns="http://www.w3.org/2000/svg">
+                          <path d="m4.481 15.659c-1.334 3.916-1.48 4.232-1.48 4.587 0 .528.46.749.749.749.352 0 .668-.137 4.574-1.492zm1.06-1.061 3.846 3.846 11.321-11.311c.195-.195.293-.45.293-.707 0-.255-.098-.51-.293-.706-.692-.691-1.742-1.74-2.435-2.432-.195-.195-.451-.293-.707-.293-.254 0-.51.098-.706.293z" fill-rule="nonzero"/>
+                        </svg>
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn--icon btn--sm danger js-delete-btn"
+                        title="Delete product"
+                        data-id="<?= $product->getId() ?>"
+                        data-name="<?= htmlspecialchars($product->getName()) ?>"
+                      >
+                        <svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" height="24" width="24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                          <path d="m20.015 6.506h-16v14.423c0 .591.448 1.071 1 1.071h14c.552 0 1-.48 1-1.071 0-3.905 0-14.423 0-14.423zm-5.75 2.494c.414 0 .75.336.75.75v8.5c0 .414-.336.75-.75.75s-.75-.336-.75-.75v-8.5c0-.414.336-.75.75-.75zm-4.5 0c.414 0 .75.336.75.75v8.5c0 .414-.336.75-.75.75s-.75-.336-.75-.75v-8.5c0-.414.336-.75.75-.75zm-.75-5v-1c0-.535.474-1 1-1h4c.526 0 1 .465 1 1v1h5.254c.412 0 .746.335.746.747s-.334.747-.746.747h-16.507c-.413 0-.747-.335-.747-.747s.334-.747.747-.747zm4.5 0v-.5h-3v.5z" fill-rule="nonzero"/>
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <?php endforeach; ?>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="pagination">
+            <span id="visible-count"><?= count($products) ?> product<?= count($products) !== 1 ? 's' : '' ?></span>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- ===== Edit Product Modal ===== -->
+    <div class="modal-backdrop" id="edit-modal" style="display:none">
+      <div class="modal" style="max-width:32rem">
+        <h2>Edit Product</h2>
+        <form
+          method="POST"
+          id="edit-form"
+          class="edit-form"
+          action=""
+          enctype="multipart/form-data"
+        >
+          <div class="field-group">
+            <label class="field-label" for="edit-name">Name *</label>
+            <input class="field-input" type="text" id="edit-name" name="name" required />
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem">
+            <div class="field-group">
+              <label class="field-label" for="edit-price">Price (USD) *</label>
+              <input class="field-input" type="number" id="edit-price" name="price" min="0.01" step="0.01" required />
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="edit-category">Category</label>
+              <select class="field-select" id="edit-category" name="category_id">
+                <option value="">— None —</option>
+                <?php foreach ($categories as $cat): ?>
+                <option value="<?= $cat->getId() ?>"><?= htmlspecialchars($cat->getName()) ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="edit-material">Material</label>
+            <input class="field-input" type="text" id="edit-material" name="material" />
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="edit-description">Description</label>
+            <textarea class="field-textarea" id="edit-description" name="description" rows="3"></textarea>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Image</label>
+            <div class="file-drop" id="edit-file-drop-zone">
+              <input type="file" id="edit-image-upload" name="image" accept="image/jpeg,image/png,image/webp" />
+              <div class="file-drop__icon">📷</div>
+              <p class="file-drop__text">Drag &amp; drop or click to replace</p>
+              <p class="file-drop__sub">JPG, PNG or WebP · max 5 MB</p>
+            </div>
+            <div class="file-previews" id="edit-file-previews"></div>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn btn--ghost" id="edit-cancel">Cancel</button>
+            <button type="submit" class="btn btn--primary">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ===== Delete Confirm Modal ===== -->
+    <div class="modal-backdrop" id="delete-modal" style="display:none">
+      <div class="modal">
+        <h2>Delete Product</h2>
+        <p style="color:var(--text-muted)">
+          Are you sure you want to permanently delete
+          <strong id="delete-product-name"></strong>?
+          This cannot be undone.
+        </p>
+        <form method="POST" id="delete-form" action="">
+          <div class="modal-actions">
+            <button type="button" class="btn btn--ghost" id="delete-cancel">Cancel</button>
+            <button type="submit" class="btn btn--danger" style="background:rgba(239,68,68,.12); border-color:var(--red); color:var(--red)">Delete</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ===== Create Product Modal ===== -->
+    <div class="modal-backdrop" id="create-modal" style="display:none">
+      <div class="modal" style="max-width:32rem">
+        <h2>Add New Product</h2>
+        <form
+          method="POST"
+          action="/admin/products/create"
+          class="edit-form"
+          enctype="multipart/form-data"
+        >
+          <div class="field-group">
+            <label class="field-label" for="new-name">Name *</label>
+            <input class="field-input" type="text" id="new-name" name="name" required />
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem">
+            <div class="field-group">
+              <label class="field-label" for="new-price">Price (USD) *</label>
+              <input class="field-input" type="number" id="new-price" name="price" min="0.01" step="0.01" required />
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="new-category">Category</label>
+              <select class="field-select" id="new-category" name="category_id">
+                <option value="">— None —</option>
+                <?php foreach ($categories as $cat): ?>
+                <option value="<?= $cat->getId() ?>"><?= htmlspecialchars($cat->getName()) ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="new-material">Material</label>
+            <input class="field-input" type="text" id="new-material" name="material" />
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="new-description">Description</label>
+            <textarea class="field-textarea" id="new-description" name="description" rows="3"></textarea>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Image</label>
+            <div class="file-drop" id="create-file-drop-zone">
+              <input type="file" id="create-image-upload" name="image" accept="image/jpeg,image/png,image/webp" />
+              <div class="file-drop__icon">📷</div>
+              <p class="file-drop__text">Drag &amp; drop or click to browse</p>
+              <p class="file-drop__sub">JPG, PNG or WebP · max 5 MB</p>
+            </div>
+            <div class="file-previews" id="create-file-previews"></div>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn btn--ghost" id="create-cancel">Cancel</button>
+            <button type="submit" class="btn btn--primary">Add Product</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="/public/scripts/admin-products.js"></script>
+  </body>
+</html>

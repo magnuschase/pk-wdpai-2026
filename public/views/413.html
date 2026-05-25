@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>413 File Too Large — Terra &amp; Craft</title>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        font-family: system-ui, -apple-system, sans-serif;
+        background: #1a100a;
+        color: #e8ddd8;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+      }
+
+      .card {
+        background: #221610;
+        border: 1px solid #3a2820;
+        border-radius: 1rem;
+        padding: 3rem 2.5rem;
+        max-width: 28rem;
+        width: 100%;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+      }
+
+      .icon {
+        font-size: 3rem;
+        line-height: 1;
+      }
+
+      .code {
+        font-size: 0.8125rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #c4622d;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #e8ddd8;
+      }
+
+      p {
+        color: #9a857a;
+        font-size: 0.9375rem;
+        line-height: 1.6;
+      }
+
+      a {
+        display: inline-block;
+        margin-top: 0.5rem;
+        padding: 0.625rem 1.5rem;
+        background: #c4622d;
+        color: #fff;
+        border-radius: 0.5rem;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9375rem;
+        transition: opacity 0.15s;
+      }
+
+      a:hover { opacity: 0.85; }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="icon">📦</div>
+      <p class="code">Error 413</p>
+      <h1>File Too Large</h1>
+      <p>The file you uploaded exceeds the 5&nbsp;MB limit. Please choose a smaller image and try again.</p>
+      <a href="javascript:history.back()">← Go Back</a>
+    </div>
+  </body>
+</html>

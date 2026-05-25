@@ -13,7 +13,9 @@ RUN apk add --no-cache --virtual .build-deps $BUILD_DEPS \
 
 RUN apk add --no-cache --virtual .run-deps $RUN_DEPS
 
-RUN echo 'memory_limit = -1' >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini;
+RUN echo 'memory_limit = -1' >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini; \
+    echo 'upload_max_filesize = 6M' >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini; \
+    echo 'post_max_size = 8M' >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini;
 
 # Copy the application code
 COPY . /app

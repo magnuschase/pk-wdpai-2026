@@ -98,6 +98,67 @@ class GalleryItemsRepository extends Repository
         $query->execute();
     }
 
+    public function create(
+        string $name,
+        float $price,
+        ?int $categoryId,
+        ?string $material,
+        ?string $imageUrl,
+        ?string $description
+    ): int {
+        $query = $this->database->connect()->prepare('
+            INSERT INTO gallery_items (category_id, name, material, price, image_url, description)
+            VALUES (:category_id, :name, :material, :price, :image_url, :description)
+            RETURNING id
+        ');
+        $query->bindValue(':category_id', $categoryId, $categoryId === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
+        $query->bindParam(':name', $name);
+        $query->bindValue(':material', $material, $material === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
+        $query->bindParam(':price', $price);
+        $query->bindValue(':image_url', $imageUrl, $imageUrl === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
+        $query->bindValue(':description', $description, $description === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
+        $query->execute();
+        return (int) $query->fetchColumn();
+    }
+
+    public function update(
+        int $id,
+        string $name,
+        float $price,
+        ?int $categoryId,
+        ?string $material,
+        ?string $imageUrl,
+        ?string $description
+    ): void {
+        $query = $this->database->connect()->prepare('
+            UPDATE gallery_items
+            SET category_id = :category_id,
+                name        = :name,
+                material    = :material,
+                price       = :price,
+                image_url   = :image_url,
+                description = :description
+            WHERE id = :id
+        ');
+        $query->bindParam(':id', $id, PDO::PARAM_INT);
+        $query->bindValue(':category_id', $categoryId, $categoryId === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
+        $query->bindParam(':name', $name);
+        $query->bindValue(':material', $material, $material === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
+        $query->bindParam(':price', $price);
+        $query->bindValue(':image_url', $imageUrl, $imageUrl === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
+        $query->bindValue(':description', $description, $description === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
+        $query->execute();
+    }
+
+    public function delete(int $id): void
+    {
+        $query = $this->database->connect()->prepare('
+            DELETE FROM gallery_items WHERE id = :id
+        ');
+        $query->bindParam(':id', $id, PDO::PARAM_INT);
+        $query->execute();
+    }
+
     private function mapRowToGalleryItem(array $row): GalleryItem
     {
         return new GalleryItem(
