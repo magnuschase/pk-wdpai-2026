@@ -1,4 +1,14 @@
 <?php
+$isSecure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+	|| (isset($_SERVER['SERVER_PORT']) && (int) $_SERVER['SERVER_PORT'] === 443);
+
+session_set_cookie_params([
+	'lifetime' => 0,
+	'path' => '/',
+	'secure' => $isSecure,
+	'httponly' => true,
+	'samesite' => 'Lax',
+]);
 session_start();
 
 include 'Routing.php';

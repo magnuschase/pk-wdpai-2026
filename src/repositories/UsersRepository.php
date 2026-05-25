@@ -5,13 +5,25 @@ require_once __DIR__ . '/../models/User.php';
 
 class UsersRepository extends Repository
 {
+	private static ?UsersRepository $instance = null;
+
+	private function __construct()
+	{
+		parent::__construct();
+	}
+
+	public static function getInstance(): self
+	{
+		if (self::$instance === null) {
+			self::$instance = new self();
+		}
+		return self::$instance;
+	}
 
 	public function getUsers(): array
 	{
 		$query = $this->database->connect()->prepare(
-			"
-			SELECT * FROM users;
-			"
+			'SELECT id, username, email, password, is_active, is_admin FROM users'
 		);
 		$query->execute();
 
@@ -26,25 +38,19 @@ class UsersRepository extends Repository
 	public function getUserByEmail(string $email): ?User
 	{
 		$query = $this->database->connect()->prepare(
-			"
-			SELECT * FROM users WHERE email = :email
-			"
+			'SELECT id, username, email, password, is_active, is_admin FROM users WHERE email = :email'
 		);
 		$query->bindParam(':email', $email);
 		$query->execute();
 
 		$row = $query->fetch(PDO::FETCH_ASSOC);
-		if (!$row) {
-			return null;
-		}
-
-		return $this->mapRowToUser($row);
+		return $row ? $this->mapRowToUser($row) : null;
 	}
 
 	public function getUserById(int $id): ?User
 	{
 		$query = $this->database->connect()->prepare(
-			"SELECT * FROM users WHERE id = :id"
+			'SELECT id, username, email, password, is_active, is_admin FROM users WHERE id = :id'
 		);
 		$query->bindParam(':id', $id, PDO::PARAM_INT);
 		$query->execute();
@@ -58,22 +64,22 @@ class UsersRepository extends Repository
 		string $email,
 		string $hashedPassword,
 		bool $isAdmin = false
-	) {
+	): void {
 		$query = $this->database->connect()->prepare(
-			"INSERT INTO users (username, email, password, is_admin) VALUES (?, ?, ?, ?)"
+			'INSERT INTO users (username, email, password, is_admin) VALUES (?, ?, ?, ?)'
 		);
 		$query->execute([
 			$username,
 			$email,
 			$hashedPassword,
-			$isAdmin ? 'true' : 'false'
+			$isAdmin ? 'true' : 'false',
 		]);
 	}
 
 	public function updateUser(int $id, bool $isAdmin, bool $isActive): void
 	{
 		$query = $this->database->connect()->prepare(
-			"UPDATE users SET is_admin = :is_admin, is_active = :is_active WHERE id = :id"
+			'UPDATE users SET is_admin = :is_admin, is_active = :is_active WHERE id = :id'
 		);
 		$query->bindParam(':id',        $id,       PDO::PARAM_INT);
 		$query->bindParam(':is_admin',  $isAdmin,  PDO::PARAM_BOOL);
@@ -84,7 +90,7 @@ class UsersRepository extends Repository
 	public function deleteUser(int $id): void
 	{
 		$query = $this->database->connect()->prepare(
-			"DELETE FROM users WHERE id = :id"
+			'DELETE FROM users WHERE id = :id'
 		);
 		$query->bindParam(':id', $id, PDO::PARAM_INT);
 		$query->execute();
@@ -98,7 +104,7 @@ class UsersRepository extends Repository
 			$row['password'],
 			(int) $row['id'],
 			in_array($row['is_active'] ?? true, [true, 1, '1', 't'], true),
-			in_array($row['is_admin'] ?? false, [true, 1, '1', 't'], true)
+			in_array($row['is_admin']  ?? false, [true, 1, '1', 't'], true)
 		);
 	}
 }

@@ -163,7 +163,9 @@
                   <td>
                     <div class="user-cell">
                       <div class="user-cell__avatar">
-                        <?= strtoupper(mb_substr($user->getUsername(), 0, 1)) ?>
+                        <?=
+                        htmlspecialchars(strtoupper(mb_substr($user->getUsername(),
+                        0, 1))) ?>
                       </div>
                       <div>
                         <span class="user-cell__name"

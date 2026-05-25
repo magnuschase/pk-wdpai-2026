@@ -21,6 +21,11 @@
               </p>
             </div>
             <form method="POST" action="/register" class="form">
+              <input
+                type="hidden"
+                name="csrf_token"
+                value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>"
+              />
               <label for="username" class="form__label">
                 <svg
                   width="16"
@@ -42,6 +47,7 @@
                 type="text"
                 class="form__input"
                 placeholder="e.g. Jane Doe"
+                maxlength="100"
               />
               <label for="email" class="form__label">
                 <svg
@@ -64,6 +70,7 @@
                 type="email"
                 class="form__input"
                 placeholder="e.g. jane@example.com"
+                maxlength="255"
               />
               <div class="two-col-wrapper two-col-wrapper--smaller-gap">
                 <div class="flex-col">
@@ -86,6 +93,8 @@
                     type="password"
                     class="form__input"
                     placeholder="********"
+                    minlength="8"
+                    maxlength="128"
                   />
                 </div>
                 <div class="flex-col">
@@ -110,13 +119,14 @@
                     type="password"
                     class="form__input"
                     placeholder="********"
+                    maxlength="128"
                   />
                 </div>
               </div>
 
               <?php if(isset($messages)): ?>
 
-              <p class="messages"><?= $messages ?></p>
+              <p class="messages"><?= htmlspecialchars($messages) ?></p>
 
               <?php endif; ?>
 

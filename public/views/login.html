@@ -18,6 +18,11 @@
               <p>Enter your credentials to access our studio portal.</p>
             </div>
             <form method="POST" action="/login" class="form">
+              <input
+                type="hidden"
+                name="csrf_token"
+                value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>"
+              />
               <label for="email" class="form__label">
                 <svg
                   width="16"
@@ -39,6 +44,7 @@
                 type="email"
                 class="form__input"
                 placeholder="e.g. jane@example.com"
+                maxlength="255"
               />
               <label for="password" class="form__label">
                 <svg
@@ -59,11 +65,12 @@
                 type="password"
                 class="form__input"
                 placeholder="********"
+                maxlength="128"
               />
 
               <?php if(isset($messages)): ?>
 
-              <p class="messages"><?= $messages ?></p>
+              <p class="messages"><?= htmlspecialchars($messages) ?></p>
 
               <?php endif; ?>
 
