@@ -303,11 +303,35 @@ Plik źródłowy: [`docs/diagrams/erd.mmd`](docs/diagrams/erd.mmd)
 
 ### Wersja webowa
 
-<!-- TODO -->
+<table>
+  <tr>
+    <td><img src="docs/screenshots/desktop/login.png" alt="Login"></td>
+    <td><img src="docs/screenshots/desktop/gallery.png" alt="Gallery"></td>
+    <td><img src="docs/screenshots/desktop/order-wizard-step-4.png" alt="Order Wizard — step 4"></td>
+    <td><img src="docs/screenshots/desktop/my-account.png" alt="My Account"></td>
+    <td><img src="docs/screenshots/desktop/orders.png" alt="Orders"></td>
+    <td><img src="docs/screenshots/desktop/order-details.png" alt="Order Details"></td>
+    <td><img src="docs/screenshots/desktop/admin-products.png" alt="Admin — Products"></td>
+    <td><img src="docs/screenshots/desktop/users.png" alt="Admin — Users"></td>
+    <td><img src="docs/screenshots/desktop/access-denied.png" alt="Access Denied"></td>
+  </tr>
+</table>
 
 ### Wersja mobilna
 
-<!-- TODO -->
+<table>
+  <tr>
+    <td><img src="docs/screenshots/mobile/login.png" alt="Login"></td>
+    <td><img src="docs/screenshots/mobile/gallery.png" alt="Gallery"></td>
+    <td><img src="docs/screenshots/mobile/order-wizard-step-1.png" alt="Order Wizard — step 1"></td>
+    <td><img src="docs/screenshots/mobile/orders.png" alt="Orders"></td>
+    <td><img src="docs/screenshots/mobile/admin-products.png" alt="Admin — Products"></td>
+    <td><img src="docs/screenshots/mobile/my-account.png" alt="My Account"></td>
+    <td><img src="docs/screenshots/mobile/my-account-scrolled.png" alt="My Account — scrolled"></td>
+    <td><img src="docs/screenshots/mobile/sidebar-user.png" alt="Sidebar — User"></td>
+    <td><img src="docs/screenshots/mobile/sidebar-admin.png" alt="Sidebar — Admin"></td>
+  </tr>
+</table>
 
 ---
 
