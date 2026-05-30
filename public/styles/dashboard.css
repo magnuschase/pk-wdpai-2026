@@ -1,5 +1,5 @@
 /* ============================================================
-   USER DASHBOARD — order history & favourites
+   USER DASHBOARD - order history & favourites
    ============================================================ */
 
 .dashboard {
@@ -169,11 +169,26 @@
   white-space: nowrap;
 }
 
-.status-badge--pending    { background: rgba(245,158,11,.12);  color: var(--amber); }
-.status-badge--approved   { background: rgba(34,197,94,.12);   color: var(--green); }
-.status-badge--in_progress{ background: rgba(99,102,241,.12);  color: #818cf8; }
-.status-badge--completed  { background: rgba(34,197,94,.15);   color: #4ade80; }
-.status-badge--rejected   { background: rgba(239,68,68,.12);   color: var(--red); }
+.status-badge--pending {
+  background: rgba(245, 158, 11, 0.12);
+  color: var(--amber);
+}
+.status-badge--approved {
+  background: rgba(34, 197, 94, 0.12);
+  color: var(--green);
+}
+.status-badge--in_progress {
+  background: rgba(99, 102, 241, 0.12);
+  color: #818cf8;
+}
+.status-badge--completed {
+  background: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+}
+.status-badge--rejected {
+  background: rgba(239, 68, 68, 0.12);
+  color: var(--red);
+}
 
 /* ---- Empty state ---- */
 

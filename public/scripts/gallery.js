@@ -1,5 +1,5 @@
 /**
- * gallery.js — Favourite toggle using the Fetch API.
+ * gallery.js - Favourite toggle using the Fetch API.
  * POSTs to /gallery/favourite with JSON {item_id} and toggles the
  * .is-faved class + swaps the SVG heart icon on success.
  */

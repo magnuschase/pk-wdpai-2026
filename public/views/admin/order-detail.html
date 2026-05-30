@@ -5,7 +5,7 @@
   <link rel="stylesheet" href="/public/styles/admin.css" />
   <link rel="stylesheet" href="/public/styles/order-details.css" />
 
-  <title>Order #<?= $order->getId() ?> — Admin — Terra &amp; Craft</title>
+  <title>Order #<?= $order->getId() ?> - Admin - Terra &amp; Craft</title>
 </head>
 <body>
 <div class="admin-shell">
@@ -60,7 +60,7 @@
           <div class="order-details__object-type">
             <div>
               <p class="order-detail__label">Object Type</p>
-              <p class="order-detail__value"><?= htmlspecialchars($objectType?->getName() ?? '—') ?></p>
+              <p class="order-detail__value"><?= htmlspecialchars($objectType?->getName() ?? '-') ?></p>
             </div>
             <div>
               <p class="order-detail__label">Glaze</p>
@@ -71,7 +71,7 @@
                   <?php endif; ?>
                   <?= htmlspecialchars($glaze->getName()) ?>
                 <?php else: ?>
-                  —
+                  -
                 <?php endif; ?>
               </p>
             </div>
@@ -79,9 +79,9 @@
               <p class="order-detail__label">Size</p>
               <p class="order-detail__value">
                 <?php
-                  $size = ucfirst($order->getSizeType() ?? '—');
+                  $size = ucfirst($order->getSizeType() ?? '-');
                   if ($order->getSizeType() === 'custom' && $order->getCustomDimensions()) {
-                      $size .= ' — ' . htmlspecialchars($order->getCustomDimensions());
+                      $size .= ' - ' . htmlspecialchars($order->getCustomDimensions());
                   }
                   echo $size;
                 ?>
@@ -97,7 +97,7 @@
                       if ($order->getBudgetMax() !== null) $parts[] = 'to $' . number_format($order->getBudgetMax(), 0);
                       echo implode(' ', $parts);
                   } else {
-                      echo '—';
+                      echo '-';
                   }
                 ?>
               </p>

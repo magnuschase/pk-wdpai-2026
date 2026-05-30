@@ -39,7 +39,7 @@ class GalleryController extends AppController
         $this->render('gallery', compact('categories', 'items', 'favouriteIds', 'activeCategory'));
     }
 
-    // POST /gallery/favourite — Fetch API endpoint, returns JSON
+    // POST /gallery/favourite - Fetch API endpoint, returns JSON
     public function toggleFavourite(): void
     {
         $this->requireLogin();

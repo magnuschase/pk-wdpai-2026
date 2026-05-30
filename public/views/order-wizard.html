@@ -4,7 +4,7 @@
   <?php include __DIR__ . '/partials/head.html'; ?>
   <link rel="stylesheet" href="/public/styles/order-wizard.css" />
   <link rel="stylesheet" href="/public/styles/admin.css" />
-  <title>Custom Order Wizard — Terra &amp; Craft</title>
+  <title>Custom Order Wizard - Terra &amp; Craft</title>
 </head>
 <body>
   <?php include __DIR__ . '/partials/nav.html'; ?>
@@ -42,7 +42,7 @@
       </div>
     </div>
 
-    <!-- Form — all steps in one POST, JS shows/hides panels -->
+    <!-- Form - all steps in one POST, JS shows/hides panels -->
     <form method="POST" action="/order" enctype="multipart/form-data" id="wizard-form" novalidate>
 
       <!-- ===== STEP 1: Choose Object Type ===== -->
@@ -163,7 +163,7 @@
           </div>
         </div>
 
-        <!-- Custom dimensions field — shown via JS when "Custom" is selected -->
+        <!-- Custom dimensions field - shown via JS when "Custom" is selected -->
         <div class="field-group" id="custom-dimensions-wrap" style="display:none;">
           <label class="field-label" for="custom_dimensions">Custom dimensions</label>
           <input class="field-input"
@@ -213,7 +213,7 @@
                     name="special_requests"
                     rows="4"
                     maxlength="1000"
-                    placeholder="Describe your vision — engravings, patterns, colours, occasion, anything that helps us understand what you have in mind..."></textarea>
+                    placeholder="Describe your vision - engravings, patterns, colours, occasion, anything that helps us understand what you have in mind..."></textarea>
           <p class="char-counter"><span id="req-count">0</span> / 1000</p>
         </div>
 
@@ -249,15 +249,15 @@
         <div class="summary-grid" id="order-summary">
           <div class="summary-row">
             <span class="summary-row__label">Object Type</span>
-            <span class="summary-row__value" id="sum-object">—</span>
+            <span class="summary-row__value" id="sum-object">-</span>
           </div>
           <div class="summary-row">
             <span class="summary-row__label">Glaze</span>
-            <span class="summary-row__value" id="sum-glaze">—</span>
+            <span class="summary-row__value" id="sum-glaze">-</span>
           </div>
           <div class="summary-row">
             <span class="summary-row__label">Size</span>
-            <span class="summary-row__value" id="sum-size">—</span>
+            <span class="summary-row__value" id="sum-size">-</span>
           </div>
           <div class="summary-row">
             <span class="summary-row__label">Budget</span>

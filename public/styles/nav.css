@@ -6,7 +6,7 @@
   justify-content: space-between;
   gap: 1rem;
   color: var(--nav-foreground);
-  /* Semi-transparent frosted glass — stays readable when content scrolls behind */
+  /* Semi-transparent frosted glass - stays readable when content scrolls behind */
   background-color: rgba(34, 22, 16, 0.82);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);

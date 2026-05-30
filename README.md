@@ -1,4 +1,4 @@
-# Terra & Craft — Ceramic Studio App
+# Terra & Craft - Ceramic Studio App
 
 **Autor:** Jakub Kapała
 
@@ -44,7 +44,7 @@ Browser
 
 ```mermaid
 flowchart TB
-    subgraph CLIENT["Browser — Client Layer"]
+    subgraph CLIENT["Browser - Client Layer"]
         direction LR
         HTML["HTML Templates<br/>(.html + PHP includes)"]
         CSS["CSS<br/>(styles/)"]
@@ -56,7 +56,7 @@ flowchart TB
             NG["Nginx<br/>· Serves static assets<br/>· Routes .php → PHP-FPM<br/>· Error pages: 400/403/404/413/500"]
         end
 
-        subgraph PHP["php container — Application Layer (MVC)"]
+        subgraph PHP["php container - Application Layer (MVC)"]
             direction TB
             ENTRY["index.php<br/>· session_set_cookie_params<br/>· session_start"]
             ROUTER["Routing.php<br/>· Exact-match routes<br/>· Regex param routes"]
@@ -66,7 +66,7 @@ flowchart TB
             ENTRY --> ROUTER --> CTRL --> REPO --> MODEL
         end
 
-        subgraph DB["db container — Data Layer"]
+        subgraph DB["db container - Data Layer"]
             PG["PostgreSQL<br/>· 10 tables<br/>· Views: v_order_details, v_user_stats<br/>· Trigger: trg_orders_updated_at<br/>· Function: get_user_order_count"]
         end
     end
@@ -175,9 +175,9 @@ Wszystkie konta mają hasło: **`password123`**
 
 **Typy relacji:**
 
-- **1:1** — `users` ↔ `user_profiles`
-- **1:many** — `users` → `orders`, `orders` → `order_notes`, `orders` → `order_images`, `categories` → `gallery_items` itd.
-- **many:many** — `users` ↔ `gallery_items` (przez tabelę `user_favorites`)
+- **1:1** - `users` ↔ `user_profiles`
+- **1:many** - `users` → `orders`, `orders` → `order_notes`, `orders` → `order_images`, `categories` → `gallery_items` itd.
+- **many:many** - `users` ↔ `gallery_items` (przez tabelę `user_favorites`)
 
 ### Widoki (minimum 2)
 
@@ -188,11 +188,11 @@ Wszystkie konta mają hasło: **`password123`**
 
 ### Wyzwalacz
 
-`trg_orders_updated_at` — automatycznie aktualizuje pole `updated_at` przy każdej modyfikacji rekordu w tabeli `orders`.
+`trg_orders_updated_at` - automatycznie aktualizuje pole `updated_at` przy każdej modyfikacji rekordu w tabeli `orders`.
 
 ### Funkcja
 
-`get_user_order_count(p_user_id)` — zwraca całkowitą liczbę zamówień dla podanego użytkownika.
+`get_user_order_count(p_user_id)` - zwraca całkowitą liczbę zamówień dla podanego użytkownika.
 
 ### Diagram ERD
 
@@ -307,7 +307,7 @@ Plik źródłowy: [`docs/diagrams/erd.mmd`](docs/diagrams/erd.mmd)
   <tr>
     <td><img src="docs/screenshots/desktop/login.png" alt="Login"></td>
     <td><img src="docs/screenshots/desktop/gallery.png" alt="Gallery"></td>
-    <td><img src="docs/screenshots/desktop/order-wizard-step-4.png" alt="Order Wizard — step 4"></td>
+    <td><img src="docs/screenshots/desktop/order-wizard-step-4.png" alt="Order Wizard - step 4"></td>
   </tr>
   <tr>
     <td><img src="docs/screenshots/desktop/my-account.png" alt="My Account"></td>
@@ -315,8 +315,8 @@ Plik źródłowy: [`docs/diagrams/erd.mmd`](docs/diagrams/erd.mmd)
     <td><img src="docs/screenshots/desktop/order-details.png" alt="Order Details"></td>
   </tr>
   <tr>
-    <td><img src="docs/screenshots/desktop/admin-products.png" alt="Admin — Products"></td>
-    <td><img src="docs/screenshots/desktop/users.png" alt="Admin — Users"></td>
+    <td><img src="docs/screenshots/desktop/admin-products.png" alt="Admin - Products"></td>
+    <td><img src="docs/screenshots/desktop/users.png" alt="Admin - Users"></td>
     <td><img src="docs/screenshots/desktop/access-denied.png" alt="Access Denied"></td>
   </tr>
 </table>
@@ -327,17 +327,17 @@ Plik źródłowy: [`docs/diagrams/erd.mmd`](docs/diagrams/erd.mmd)
   <tr>
     <td><img src="docs/screenshots/mobile/login.png" alt="Login"></td>
     <td><img src="docs/screenshots/mobile/gallery.png" alt="Gallery"></td>
-    <td><img src="docs/screenshots/mobile/order-wizard-step-1.png" alt="Order Wizard — step 1"></td>
+    <td><img src="docs/screenshots/mobile/order-wizard-step-1.png" alt="Order Wizard - step 1"></td>
   </tr>
   <tr>
     <td><img src="docs/screenshots/mobile/orders.png" alt="Orders"></td>
-    <td><img src="docs/screenshots/mobile/admin-products.png" alt="Admin — Products"></td>
+    <td><img src="docs/screenshots/mobile/admin-products.png" alt="Admin - Products"></td>
     <td><img src="docs/screenshots/mobile/my-account.png" alt="My Account"></td>
   </tr>
   <tr>
-    <td><img src="docs/screenshots/mobile/my-account-scrolled.png" alt="My Account — scrolled"></td>
-    <td><img src="docs/screenshots/mobile/sidebar-user.png" alt="Sidebar — User"></td>
-    <td><img src="docs/screenshots/mobile/sidebar-admin.png" alt="Sidebar — Admin"></td>
+    <td><img src="docs/screenshots/mobile/my-account-scrolled.png" alt="My Account - scrolled"></td>
+    <td><img src="docs/screenshots/mobile/sidebar-user.png" alt="Sidebar - User"></td>
+    <td><img src="docs/screenshots/mobile/sidebar-admin.png" alt="Sidebar - Admin"></td>
   </tr>
 </table>
 
@@ -361,9 +361,9 @@ bash tests/run.sh
 
 Pokrycie testami:
 
-- `GalleryItemTest` — konstruktor, pola nullable
-- `UserTest` — gettery, wartości domyślne, flaga admina
-- `GalleryItemsRepositoryTest` — `getAll()`, `getById()` z mock PDO (Reflection API)
+- `GalleryItemTest` - konstruktor, pola nullable
+- `UserTest` - gettery, wartości domyślne, flaga admina
+- `GalleryItemsRepositoryTest` - `getAll()`, `getById()` z mock PDO (Reflection API)
 
 ### Testy integracyjne
 
@@ -405,8 +405,8 @@ Sprawdzane scenariusze (10 przypadków):
 
 1. Zaloguj się jako admin → `/admin/users`
 2. Kliknij **Add User**, wypełnij formularz i zapisz
-3. Edytuj nowo dodanego użytkownika — zmień rolę na Admin
-4. Usuń użytkownika — potwierdź w modalu
+3. Edytuj nowo dodanego użytkownika - zmień rolę na Admin
+4. Usuń użytkownika - potwierdź w modalu
 5. Spróbuj usunąć własne konto → błąd `cannot_delete_self`
 
 ### 4. Zarządzanie zamówieniami (admin)
@@ -414,16 +414,16 @@ Sprawdzane scenariusze (10 przypadków):
 1. Przejdź do `/admin/orders`
 2. Kliknij wybrane zamówienie aby zobaczyć szczegóły
 3. Zmień status na `approved` i zapisz
-4. Sprawdź, że `updated_at` zostało zaktualizowane — wyzwalacz `trg_orders_updated_at` zadziałał
+4. Sprawdź, że `updated_at` zostało zaktualizowane - wyzwalacz `trg_orders_updated_at` zadziałał
 5. Dodaj notatkę wewnętrzną (zakładka _Internal_)
 6. Wyślij wiadomość do klienta (zakładka _Customer_)
 
 ### 5. Zarządzanie produktami (admin)
 
 1. Przejdź do `/admin/products`
-2. Kliknij **Add Product** — wypełnij formularz, dodaj zdjęcie
-3. Edytuj produkt — zmień cenę i zamień zdjęcie
-4. Usuń produkt — potwierdź w modalu
+2. Kliknij **Add Product** - wypełnij formularz, dodaj zdjęcie
+3. Edytuj produkt - zmień cenę i zamień zdjęcie
+4. Usuń produkt - potwierdź w modalu
 
 ### 6. Galeria i ulubione (użytkownik)
 
@@ -471,7 +471,7 @@ SELECT get_user_order_count(2);
 | #   | Wymaganie                                                        | Status |
 | --- | ---------------------------------------------------------------- | ------ |
 | 1   | Ochrona przed SQL injection (prepared statements)                | ✅     |
-| 2   | Nie zdradzam czy email istnieje — "Invalid email or password"    | ✅     |
+| 2   | Nie zdradzam czy email istnieje - "Invalid email or password"    | ✅     |
 | 3   | Walidacja formatu email po stronie serwera (`filter_var`)        | ✅     |
 | 4   | `UsersRepository` zarządzany jako singleton                      | ✅     |
 | 5   | Login/register przyjmuje dane tylko na POST, GET renderuje widok | ✅     |
@@ -488,11 +488,11 @@ SELECT get_user_order_count(2);
 | 16  | Walidacja złożoności hasła (min. 8 znaków)                       | ✅     |
 | 17  | Przy rejestracji sprawdzam czy email jest już w bazie            | ✅     |
 | 18  | Dane w widokach escapowane (`htmlspecialchars`)                  | ✅     |
-| 19  | Brak stack trace w produkcji — własne strony błędów              | ✅     |
+| 19  | Brak stack trace w produkcji - własne strony błędów              | ✅     |
 | 20  | Sensowne kody HTTP (400/403/404/413/500)                         | ✅     |
 | 21  | Hasło nie jest przekazywane do widoków                           | ✅     |
 | 22  | Z bazy pobieram tylko niezbędne kolumny użytkownika              | ✅     |
-| 23  | Poprawne wylogowanie — niszczę sesję                             | ✅     |
+| 23  | Poprawne wylogowanie - niszczę sesję                             | ✅     |
 | 24  | Logowanie nieudanych prób logowania (`error_log`, bez haseł)     | ✅     |
 
 ---
@@ -513,7 +513,7 @@ SELECT get_user_order_count(2);
 - [x] Minimum 1 funkcja PL/pgSQL
 - [x] Transakcje na odpowiednim poziomie izolacji (PDO domyślnie READ COMMITTED)
 - [x] Obsługa błędów: strony 400 / 403 / 404 / 413 / 500
-- [x] PHPUnit: testy modeli i repozytorium (bez Composera — PHAR)
+- [x] PHPUnit: testy modeli i repozytorium (bez Composera - PHAR)
 - [x] Testy integracyjne endpointów (skrypt curl/bash)
 - [x] Diagram ERD (`docs/diagrams/erd.mmd`)
 - [x] Diagram architektury (`docs/diagrams/architecture.mmd`)
@@ -530,4 +530,4 @@ SELECT get_user_order_count(2);
 - [x] Upload zdjęć (zamówienia i produkty galerii)
 - [x] Panel klienta: historia zamówień i ulubione
 - [x] System notatek do zamówień (wewnętrzne i do klienta)
-- [x] Własny `EnvLoader` — konfiguracja przez `.env` zamiast `config.php`
+- [x] Własny `EnvLoader` - konfiguracja przez `.env` zamiast `config.php`

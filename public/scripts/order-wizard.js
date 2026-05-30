@@ -1,5 +1,5 @@
 /**
- * order-wizard.js — Multi-step form navigation for the Custom Order Wizard.
+ * order-wizard.js - Multi-step form navigation for the Custom Order Wizard.
  * Handles:
  *   - Step panel show/hide
  *   - Progress bar active / done state
@@ -209,7 +209,7 @@
       );
       let sizeText = sizeLabel ? sizeLabel.textContent : sizeRadio.value;
       if (sizeRadio.value === "custom" && custom && custom.value.trim()) {
-        sizeText += " — " + custom.value.trim();
+        sizeText += " - " + custom.value.trim();
       }
       set("sum-size", sizeText);
     }

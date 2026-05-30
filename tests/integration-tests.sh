@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Integration smoke tests — checks HTTP status codes against the running app.
+# Integration smoke tests - checks HTTP status codes against the running app.
 # Usage: ./tests/integration-tests.sh [BASE_URL]
 # Default base URL: http://localhost
 
@@ -20,7 +20,7 @@ check() {
         echo "  PASS  $label (HTTP $actual)"
         PASS=$((PASS + 1))
     else
-        echo "  FAIL  $label — expected HTTP $expected, got $actual"
+        echo "  FAIL  $label - expected HTTP $expected, got $actual"
         FAIL=$((FAIL + 1))
     fi
 }
@@ -59,7 +59,7 @@ check "GET /admin/products redirects" "302" \
 check "GET /nonexistent returns 404" "404" \
     "$(curl -s -o /dev/null -w "%{http_code}" "$BASE/nonexistent-page-xyz")"
 
-# POST /login with bad credentials — must use a real session + CSRF token.
+# POST /login with bad credentials - must use a real session + CSRF token.
 # Step 1: GET login page to establish session and capture the CSRF token.
 LOGIN_HTML=$(curl -s -c "$COOKIEJAR" "$BASE/login")
 CSRF=$(echo "$LOGIN_HTML" | grep 'name="csrf_token"' | sed 's/.*value="\([^"]*\)".*/\1/')

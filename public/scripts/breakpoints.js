@@ -1,5 +1,5 @@
 /**
- * Canonical layout breakpoints — keep in sync with :root in base.css.
+ * Canonical layout breakpoints - keep in sync with :root in base.css.
  * Mobile layout matches @media (max-width: 930px) across stylesheets.
  */
 window.AppBreakpoints = Object.freeze({

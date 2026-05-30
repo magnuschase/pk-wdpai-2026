@@ -213,12 +213,12 @@ INSERT INTO categories (name, slug) VALUES
 -- Gallery items
 INSERT INTO gallery_items (category_id, name, material, price, image_url, description) VALUES
 (5, 'Aquatic Planter No.4', 'Stoneware',    120.00, '/public/images/gallery/octopus.png',         'Hand-built planter shaped as a rose-pink octopus, with tentacle legs and glass-bead eyes; each piece hand-pinched for a unique silhouette.'),
-(3, 'Morning Coffee Set',   'Earthenware',  140.00, '/public/images/gallery/coffee_set.png',      'Espresso cup and saucer decorated with bold geometric colour patches in a mosaic pattern — a cheerful piece inspired by cubist painting.'),
+(3, 'Morning Coffee Set',   'Earthenware',  140.00, '/public/images/gallery/coffee_set.png',      'Espresso cup and saucer decorated with bold geometric colour patches in a mosaic pattern - a cheerful piece inspired by cubist painting.'),
 (3, 'Peppers Plate',        'Stoneware',     45.00, '/public/images/gallery/peppers.png',         'Round plate hand-painted with a ring of chillies, banana peppers, cherry tomatoes and olive sprigs on a warm off-white ground.'),
-(2, 'Midnight Bowl',        'Stoneware',     85.00, '/public/images/gallery/bowl.png',            'Wide shallow bowl finished in a mottled sage and teal reactive glaze with a warm natural rim — no two pieces fire identically.'),
-(3, 'Violet Mug',           'Stoneware',     65.00, '/public/images/gallery/purple_mug.png',      'Chunky mug with an all-over dimpled texture and a soft lavender glaze — the pebbled surface makes every grip satisfying.'),
+(2, 'Midnight Bowl',        'Stoneware',     85.00, '/public/images/gallery/bowl.png',            'Wide shallow bowl finished in a mottled sage and teal reactive glaze with a warm natural rim - no two pieces fire identically.'),
+(3, 'Violet Mug',           'Stoneware',     65.00, '/public/images/gallery/purple_mug.png',      'Chunky mug with an all-over dimpled texture and a soft lavender glaze - the pebbled surface makes every grip satisfying.'),
 (3, 'Desert Red Mug',       'Stoneware',     35.00, '/public/images/gallery/desert_red_mug.png',  'Rustic mug glazed in a mottled terracotta-red with earthy brown speckles, evoking sun-baked desert landscapes.'),
-(4, 'Bunny Duo',            'Stoneware',     95.00, '/public/images/gallery/bunnies.png',         'A pair of tall, slender rabbit figures in raw textured clay with gilded highlights — minimal and serene.');
+(4, 'Bunny Duo',            'Stoneware',     95.00, '/public/images/gallery/bunnies.png',         'A pair of tall, slender rabbit figures in raw textured clay with gilded highlights - minimal and serene.');
 
 
 -- Custom order object types

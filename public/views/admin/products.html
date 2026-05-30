@@ -4,7 +4,7 @@
     <?php include __DIR__ . '/../partials/head.html'; ?>
     <link rel="stylesheet" href="/public/styles/admin.css" />
     <link rel="stylesheet" href="/public/styles/order-wizard.css" />
-    <title>Products — Admin — Terra &amp; Craft</title>
+    <title>Products - Admin - Terra &amp; Craft</title>
   </head>
   <body>
     <div class="admin-shell">
@@ -15,7 +15,7 @@
       <main class="admin-main">
         <div class="page-header">
           <h1>Products</h1>
-          <p>Manage gallery items — add, edit or remove products.</p>
+          <p>Manage gallery items - add, edit or remove products.</p>
         </div>
 
         <!-- Error banner -->
@@ -155,10 +155,10 @@
                     <?php endif; ?>
                   </td>
                   <td style="color:var(--text-muted)">
-                    <?= htmlspecialchars($cat?->getName() ?? '—') ?>
+                    <?= htmlspecialchars($cat?->getName() ?? '-') ?>
                   </td>
                   <td style="color:var(--text-muted)">
-                    <?= htmlspecialchars($product->getMaterial() ?? '—') ?>
+                    <?= htmlspecialchars($product->getMaterial() ?? '-') ?>
                   </td>
                   <td style="font-weight:600; color:var(--text)">
                     $<?= number_format($product->getPrice(), 2) ?>
@@ -230,7 +230,7 @@
             <div class="field-group">
               <label class="field-label" for="edit-category">Category</label>
               <select class="field-select" id="edit-category" name="category_id">
-                <option value="">— None —</option>
+                <option value="">- None -</option>
                 <?php foreach ($categories as $cat): ?>
                 <option value="<?= $cat->getId() ?>"><?= htmlspecialchars($cat->getName()) ?></option>
                 <?php endforeach; ?>
@@ -303,7 +303,7 @@
             <div class="field-group">
               <label class="field-label" for="new-category">Category</label>
               <select class="field-select" id="new-category" name="category_id">
-                <option value="">— None —</option>
+                <option value="">- None -</option>
                 <?php foreach ($categories as $cat): ?>
                 <option value="<?= $cat->getId() ?>"><?= htmlspecialchars($cat->getName()) ?></option>
                 <?php endforeach; ?>
